@@ -98,11 +98,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CefWebBrowerX.cs">
+    <Compile Include="Browser\CefLifeSpanHandler.cs" />
+    <Compile Include="Browser\CefWebBrowerX.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CefWebBrowerX.Designer.cs">
+    <Compile Include="Browser\CefWebBrowerX.Designer.cs">
       <DependentUpon>CefWebBrowerX.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Browser\NewWindowEventArgs.cs" />
+    <Compile Include="Browser\TabBrowsers.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Browser\TabBrowsers.Designer.cs">
+      <DependentUpon>TabBrowsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\SuperTabControlX.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\SuperTabControlX.Designer.cs">
+      <DependentUpon>SuperTabControlX.cs</DependentUpon>
     </Compile>
     <Compile Include="MainFrm.cs">
       <SubType>Form</SubType>
@@ -112,6 +126,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Browser\CefWebBrowerX.resx">
+      <DependentUpon>CefWebBrowerX.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Browser\TabBrowsers.resx">
+      <DependentUpon>TabBrowsers.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainFrm.resx">
       <DependentUpon>MainFrm.cs</DependentUpon>
     </EmbeddedResource>

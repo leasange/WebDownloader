@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevComponents.DotNetBar;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,12 @@ namespace WebDownloader
         public MainFrm()
         {
             InitializeComponent();
+
+        }
+
+        private void btnEnter_Click(object sender, EventArgs e)
+        {
+            tabBrowsers.OpenUrl(this.tbUrl.Text.Trim());
         }
     }
 }

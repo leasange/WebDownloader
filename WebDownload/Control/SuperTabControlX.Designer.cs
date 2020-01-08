@@ -1,6 +1,6 @@
-﻿namespace WebDownloader
+﻿namespace WebDownloader.Control
 {
-    partial class CefWebBrowerX
+    partial class SuperTabControlX
     {
         /// <summary> 
         /// 必需的设计器变量。
@@ -28,16 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // CefWebBrowerX
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "CefWebBrowerX";
-            this.Load += new System.EventHandler(this.CefWebBrowerX_Load);
-            this.ResumeLayout(false);
-
+            components = new System.ComponentModel.Container();
         }
 
         #endregion
