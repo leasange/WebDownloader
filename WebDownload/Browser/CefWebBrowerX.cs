@@ -19,6 +19,7 @@ namespace WebDownloader.Browser
         public event EventHandler<CefSharp.FrameLoadStartEventArgs> FrameLoadStart;
         public event EventHandler<CefSharp.FrameLoadEndEventArgs> FrameLoadEnd;
         public event EventHandler CreateTab;
+        public event EventHandler<TitleChangedEventArgs> TitleChanged;
 
         public ChromiumWebBrowser webBrowser { get; private set; }
         public string WebName
@@ -95,6 +96,7 @@ namespace WebDownloader.Browser
                 webBrowser.FrameLoadStart += webBrowser_FrameLoadStart;
                 webBrowser.FrameLoadEnd += webBrowser_FrameLoadEnd;
                 webBrowser.StatusMessage += webBrowser_StatusMessage;
+                webBrowser.TitleChanged += webBrowser_TitleChanged;
 
                 var ceflife = new CefLifeSpanHandler();
                 ceflife.BeforePopupEvent += ceflife_BeforePopupEvent;
@@ -106,7 +108,15 @@ namespace WebDownloader.Browser
                 webBrowser.Load(url);
         }
 
-        void webBrowser_StatusMessage(object sender, CefSharp.StatusMessageEventArgs e)
+        private void webBrowser_TitleChanged(object sender, TitleChangedEventArgs e)
+        {
+            if (TitleChanged!=null)
+            {
+                TitleChanged(this, e);
+            }
+        }
+
+        private void webBrowser_StatusMessage(object sender, CefSharp.StatusMessageEventArgs e)
         {
             this.Invoke(new Action(() =>
             {

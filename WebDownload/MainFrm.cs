@@ -16,7 +16,18 @@ namespace WebDownloader
         public MainFrm()
         {
             InitializeComponent();
+            tabBrowsers.SuperTabControlX.SelectedTabChanged += SuperTabControlX_SelectedTabChanged;
+            tabBrowsers.TitleChanged += tabBrowsers_TitleChanged;
+        }
 
+        private void tabBrowsers_TitleChanged(object sender, CefSharp.TitleChangedEventArgs e)
+        {
+            this.Text = tabBrowsers.SuperTabControlX.SelectedTab.Text;
+        }
+
+        private void SuperTabControlX_SelectedTabChanged(object sender, SuperTabStripSelectedTabChangedEventArgs e)
+        {
+            this.Text = e.NewValue.Text;
         }
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.bar1 = new DevComponents.DotNetBar.Bar();
+            this.barStatus = new DevComponents.DotNetBar.Bar();
             this.lbTips = new DevComponents.DotNetBar.LabelItem();
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
             this.tbUrl = new DevComponents.DotNetBar.Controls.TextBoxX();
@@ -37,29 +37,29 @@
             this.btnNew = new DevComponents.DotNetBar.ButtonX();
             this.buttonX2 = new DevComponents.DotNetBar.ButtonX();
             this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
-            this.panelBrowser = new DevComponents.DotNetBar.PanelEx();
-            ((System.ComponentModel.ISupportInitialize)(this.bar1)).BeginInit();
+            this.panelBrowser = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.barStatus)).BeginInit();
             this.panelEx1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // bar1
+            // barStatus
             // 
-            this.bar1.AntiAlias = true;
-            this.bar1.BarType = DevComponents.DotNetBar.eBarType.StatusBar;
-            this.bar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.bar1.Font = new System.Drawing.Font("微软雅黑", 9F);
-            this.bar1.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
+            this.barStatus.AntiAlias = true;
+            this.barStatus.BarType = DevComponents.DotNetBar.eBarType.StatusBar;
+            this.barStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barStatus.Font = new System.Drawing.Font("微软雅黑", 9F);
+            this.barStatus.Items.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.lbTips});
-            this.bar1.Location = new System.Drawing.Point(0, 332);
-            this.bar1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.bar1.Name = "bar1";
-            this.bar1.RoundCorners = false;
-            this.bar1.Size = new System.Drawing.Size(719, 22);
-            this.bar1.Stretch = true;
-            this.bar1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.bar1.TabIndex = 3;
-            this.bar1.TabStop = false;
-            this.bar1.Text = "bar1";
+            this.barStatus.Location = new System.Drawing.Point(0, 332);
+            this.barStatus.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.barStatus.Name = "barStatus";
+            this.barStatus.RoundCorners = false;
+            this.barStatus.Size = new System.Drawing.Size(719, 22);
+            this.barStatus.Stretch = true;
+            this.barStatus.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.barStatus.TabIndex = 3;
+            this.barStatus.TabStop = false;
+            this.barStatus.Text = "bar1";
             // 
             // lbTips
             // 
@@ -181,19 +181,10 @@
             // 
             // panelBrowser
             // 
-            this.panelBrowser.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.panelBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBrowser.Location = new System.Drawing.Point(0, 26);
-            this.panelBrowser.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panelBrowser.Name = "panelBrowser";
             this.panelBrowser.Size = new System.Drawing.Size(719, 306);
-            this.panelBrowser.Style.Alignment = System.Drawing.StringAlignment.Center;
-            this.panelBrowser.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.panelBrowser.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.panelBrowser.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.panelBrowser.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.panelBrowser.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.panelBrowser.Style.GradientAngle = 90;
             this.panelBrowser.TabIndex = 5;
             // 
             // CefWebBrowerX
@@ -203,13 +194,13 @@
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.panelBrowser);
             this.Controls.Add(this.panelEx1);
-            this.Controls.Add(this.bar1);
+            this.Controls.Add(this.barStatus);
             this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "CefWebBrowerX";
             this.Size = new System.Drawing.Size(719, 354);
             this.Load += new System.EventHandler(this.CefWebBrowerX_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.bar1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barStatus)).EndInit();
             this.panelEx1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -217,7 +208,7 @@
 
         #endregion
 
-        private DevComponents.DotNetBar.Bar bar1;
+        private DevComponents.DotNetBar.Bar barStatus;
         private DevComponents.DotNetBar.LabelItem lbTips;
         private DevComponents.DotNetBar.PanelEx panelEx1;
         private DevComponents.DotNetBar.Controls.TextBoxX tbUrl;
@@ -226,6 +217,6 @@
         private DevComponents.DotNetBar.ButtonX btnNew;
         private DevComponents.DotNetBar.ButtonX buttonX2;
         private DevComponents.DotNetBar.ButtonX buttonX1;
-        private DevComponents.DotNetBar.PanelEx panelBrowser;
+        private System.Windows.Forms.Panel panelBrowser;
     }
 }

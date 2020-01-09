@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevComponents.DotNetBar;
 using WebDownloader.Control;
+using CefSharp;
 
 namespace WebDownloader.Browser
 {
     public partial class TabBrowsers : UserControl
     {
+        public event EventHandler<TitleChangedEventArgs> TitleChanged;
         public SuperTabControlX SuperTabControlX
         {
             get { return this.superTabControlX; }
@@ -31,25 +33,24 @@ namespace WebDownloader.Browser
                 var superItem = new SuperTabItem();
                 superItem.Text = "空白页";
                 superItem.TabFont = new Font("微软雅黑", 9f);
-                SuperTabControlPanel superTabControlPanel = new SuperTabControlPanel();
 
+                SuperTabControlPanel superTabControlPanel = new SuperTabControlPanel();
                 superItem.AttachedControl = superTabControlPanel;
                 superTabControlPanel.TabItem = superItem;
 
                 CefWebBrowerX cefWebBrowerX = new CefWebBrowerX();
                 cefWebBrowerX.Dock = DockStyle.Fill;
 
-                superTabControlPanel.Controls.Add(cefWebBrowerX);
-
-                this.superTabControlX.Tabs.Add(superItem);
-
-                this.superTabControlX.Controls.Add(superTabControlPanel);
-                this.superTabControlX.SelectedTab = superItem;
-
                 cefWebBrowerX.NewNavigateBrowser += cefWebBrowerX_NewTabEvent;
                 cefWebBrowerX.LoadingStateChanged += cefWebBrowerX_LoadingStateChanged;
                 cefWebBrowerX.FrameLoadStart += cefWebBrowerX_FrameLoadStart;
                 cefWebBrowerX.CreateTab += cefWebBrowerX_CreateTab;
+                cefWebBrowerX.TitleChanged += cefWebBrowerX_TitleChanged;
+
+                superTabControlPanel.Controls.Add(cefWebBrowerX);
+                this.superTabControlX.Tabs.Add(superItem);
+                this.superTabControlX.SelectedTab = superItem;
+                this.superTabControlX.Controls.Add(superTabControlPanel);
 
                 cefWebBrowerX.OpenUrl(url);
                 return cefWebBrowerX;
@@ -58,6 +59,26 @@ namespace WebDownloader.Browser
             {
                 return null;
             }
+            finally
+            {
+            }
+        }
+
+        private void cefWebBrowerX_TitleChanged(object sender, CefSharp.TitleChangedEventArgs e)
+        {
+            this.Invoke(new Action(() =>
+                {
+                    var item = GetTabItem((CefWebBrowerX)sender);
+                    if (item != null)
+                    {
+                        item.Text = e.Title;
+                        item.Tooltip = e.Title;
+                        if (TitleChanged != null)
+                        {
+                            TitleChanged(item, e);
+                        }
+                    }
+                }));
         }
 
         private void cefWebBrowerX_CreateTab(object sender, EventArgs e)
