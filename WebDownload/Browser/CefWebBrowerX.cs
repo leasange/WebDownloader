@@ -92,6 +92,7 @@ namespace WebDownloader.Browser
             if (webBrowser == null)
             {
                 webBrowser = new ChromiumWebBrowser(url);
+                tbUrl.Text = url;
                 webBrowser.LoadingStateChanged += webBrowser_LoadingStateChanged;
                 webBrowser.FrameLoadStart += webBrowser_FrameLoadStart;
                 webBrowser.FrameLoadEnd += webBrowser_FrameLoadEnd;
@@ -129,10 +130,6 @@ namespace WebDownloader.Browser
             this.Invoke(new Action(() =>
             {
                 lbTips.Text = "正在加载:" + e.Url;
-                if (e.Frame.IsMain)
-                {
-                    tbUrl.Text = e.Frame.Url;
-                }
                 if (FrameLoadStart!=null)
                 {
                     FrameLoadStart(this, e);
@@ -144,11 +141,24 @@ namespace WebDownloader.Browser
         {
             this.Invoke(new Action(() =>
             {
-                lbTips.Text = "结束加载:" + e.Url + ",结果:" + e.HttpStatusCode;
-                if (FrameLoadEnd!=null)
+                try
                 {
-                    FrameLoadEnd(this, e);
+                    lbTips.Text = "结束加载:" + e.Url + ",结果:" + e.HttpStatusCode;
+                    if (e.Frame.IsMain)
+                    {
+                        tbUrl.Text = e.Frame.Url;
+                    }
+                    if (FrameLoadEnd != null)
+                    {
+                        FrameLoadEnd(this, e);
+                    }
                 }
+                catch (Exception)
+                {
+                    
+                    //throw;
+                }
+
             }));
         }
 
@@ -188,15 +198,20 @@ namespace WebDownloader.Browser
         {
             this.Invoke(new Action(() =>
            {
-               lbTips.Text = e.IsLoading ? "正在加载中..." : "加载完毕";
+               try
+               {
+                   lbTips.Text = e.IsLoading ? "正在加载中..." : "加载完毕";
+                   tbUrl.Text = e.Browser.MainFrame.Url;
+                   if (LoadingStateChanged != null)
+                   {
+                       LoadingStateChanged(this, e);
+                   }
+               }
+               catch (Exception)
+               {
+                    
+               }
            }));
-            if (LoadingStateChanged != null)
-            {
-                this.Invoke(new Action(() =>
-                    {
-                        LoadingStateChanged(this, e);
-                    }));
-            }
         }
         private void CefWebBrowerX_Load(object sender, EventArgs e)
         {
