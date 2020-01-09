@@ -125,14 +125,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Browser\CefLifeSpanHandler.cs" />
     <Compile Include="Browser\CefWebBrowerX.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Browser\CefWebBrowerX.Designer.cs">
       <DependentUpon>CefWebBrowerX.cs</DependentUpon>
     </Compile>
-    <Compile Include="Browser\NewWindowEventArgs.cs" />
+    <Compile Include="CefHandler\CefLifeSpanHandler.cs" />
+    <Compile Include="CefHandler\NewWindowEventArgs.cs" />
     <Compile Include="Browser\TabBrowsers.cs">
       <SubType>UserControl</SubType>
     </Compile>

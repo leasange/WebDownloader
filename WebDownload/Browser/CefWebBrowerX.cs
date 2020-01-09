@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp.WinForms;
 using CefSharp;
+using WebDownloader.CefHandler;
 
 namespace WebDownloader.Browser
 {

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using DevComponents.DotNetBar;
 using WebDownloader.Control;
 using CefSharp;
+using WebDownloader.CefHandler;
 
 namespace WebDownloader.Browser
 {
