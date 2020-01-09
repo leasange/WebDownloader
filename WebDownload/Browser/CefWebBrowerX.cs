@@ -103,6 +103,12 @@ namespace WebDownloader.Browser
                 var ceflife = new CefLifeSpanHandler();
                 ceflife.BeforePopupEvent += ceflife_BeforePopupEvent;
                 webBrowser.LifeSpanHandler = ceflife;
+                var cefRequest = new CefRequestHandler();
+                webBrowser.RequestHandler = cefRequest;
+
+                var resFact = new CefResourceRequestHandlerFactory();
+                webBrowser.ResourceRequestHandlerFactory = resFact;
+
                 webBrowser.Dock = DockStyle.Fill;
                 this.panelBrowser.Controls.Add(webBrowser);
             }
@@ -165,6 +171,11 @@ namespace WebDownloader.Browser
 
         private void ceflife_BeforePopupEvent(object sender, NewWindowEventArgs e)
         {
+            if (e.targetUrl.StartsWith("about:blank"))//"about:blank#blocked"
+            {
+                e.newBrowser = new ChromiumWebBrowser(e.targetUrl);
+                return;
+            }
             switch (e.targetDisposition)
             {
                 case CefSharp.WindowOpenDisposition.CurrentTab:
