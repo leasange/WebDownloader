@@ -44,7 +44,7 @@ namespace WebDownloader.Browser
             {
                 return false;
             }
-            newBrowser = e.newBrowser;
+            //newBrowser = e.newBrowser;
             return true;
         }
     }

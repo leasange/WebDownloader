@@ -55,6 +55,7 @@
             this.superTabControlX.ControlBox.CloseBox});
             this.superTabControlX.Controls.Add(this.superTabControlPanel1);
             this.superTabControlX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.superTabControlX.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.superTabControlX.Location = new System.Drawing.Point(0, 0);
             this.superTabControlX.Name = "superTabControlX";
             this.superTabControlX.ReorderTabsEnabled = true;
@@ -62,10 +63,11 @@
             this.superTabControlX.SelectedTabIndex = 0;
             this.superTabControlX.Size = new System.Drawing.Size(501, 288);
             this.superTabControlX.TabFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.superTabControlX.TabIndex = 1;
+            this.superTabControlX.TabIndex = 3;
             this.superTabControlX.Tabs.AddRange(new DevComponents.DotNetBar.BaseItem[] {
             this.superTabItem1});
             this.superTabControlX.Text = "superTabControlX1";
+            this.superTabControlX.TabItemClose += new System.EventHandler<DevComponents.DotNetBar.SuperTabStripTabItemCloseEventArgs>(this.superTabControlX_TabItemClose);
             // 
             // superTabControlPanel1
             // 
@@ -81,6 +83,7 @@
             this.superTabItem1.AttachedControl = this.superTabControlPanel1;
             this.superTabItem1.GlobalItem = false;
             this.superTabItem1.Name = "superTabItem1";
+            this.superTabItem1.TabFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.superTabItem1.Text = "about:blank";
             // 
             // TabBrowsers
@@ -102,5 +105,6 @@
         private Control.SuperTabControlX superTabControlX;
         private DevComponents.DotNetBar.SuperTabControlPanel superTabControlPanel1;
         private DevComponents.DotNetBar.SuperTabItem superTabItem1;
+
     }
 }

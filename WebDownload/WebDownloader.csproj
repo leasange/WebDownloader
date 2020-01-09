@@ -139,6 +139,7 @@
     <Compile Include="Browser\TabBrowsers.Designer.cs">
       <DependentUpon>TabBrowsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Browser\UrlChangedEventArgs.cs" />
     <Compile Include="Control\SuperTabControlX.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -28,126 +28,80 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
-            this.buttonX4 = new DevComponents.DotNetBar.ButtonX();
-            this.btnEnter = new DevComponents.DotNetBar.ButtonX();
-            this.btnNew = new DevComponents.DotNetBar.ButtonX();
-            this.buttonX2 = new DevComponents.DotNetBar.ButtonX();
-            this.buttonX1 = new DevComponents.DotNetBar.ButtonX();
-            this.panelEx2 = new DevComponents.DotNetBar.PanelEx();
+            this.components = new System.ComponentModel.Container();
+            this.panelWin = new DevComponents.DotNetBar.PanelEx();
+            this.tabControl1 = new DevComponents.DotNetBar.TabControl();
+            this.tabControlPanel1 = new DevComponents.DotNetBar.TabControlPanel();
+            this.tabTask = new DevComponents.DotNetBar.TabItem(this.components);
             this.expandableSplitter1 = new DevComponents.DotNetBar.ExpandableSplitter();
             this.panelEx3 = new DevComponents.DotNetBar.PanelEx();
             this.tabBrowsers = new WebDownloader.Browser.TabBrowsers();
-            this.tbUrl = new DevComponents.DotNetBar.Controls.TextBoxX();
-            this.panelEx1.SuspendLayout();
+            this.panelWin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
+            this.tabControl1.SuspendLayout();
             this.panelEx3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panelEx1
+            // panelWin
             // 
-            this.panelEx1.CanvasColor = System.Drawing.SystemColors.Control;
-            this.panelEx1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.panelEx1.Controls.Add(this.tbUrl);
-            this.panelEx1.Controls.Add(this.buttonX4);
-            this.panelEx1.Controls.Add(this.btnEnter);
-            this.panelEx1.Controls.Add(this.btnNew);
-            this.panelEx1.Controls.Add(this.buttonX2);
-            this.panelEx1.Controls.Add(this.buttonX1);
-            this.panelEx1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelEx1.Location = new System.Drawing.Point(0, 0);
-            this.panelEx1.Name = "panelEx1";
-            this.panelEx1.Size = new System.Drawing.Size(876, 27);
-            this.panelEx1.Style.Alignment = System.Drawing.StringAlignment.Center;
-            this.panelEx1.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.panelEx1.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.panelEx1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.panelEx1.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.panelEx1.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.panelEx1.Style.GradientAngle = 90;
-            this.panelEx1.TabIndex = 2;
+            this.panelWin.CanvasColor = System.Drawing.SystemColors.Control;
+            this.panelWin.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.panelWin.Controls.Add(this.tabControl1);
+            this.panelWin.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelWin.Location = new System.Drawing.Point(0, 294);
+            this.panelWin.Name = "panelWin";
+            this.panelWin.Size = new System.Drawing.Size(876, 130);
+            this.panelWin.Style.Alignment = System.Drawing.StringAlignment.Center;
+            this.panelWin.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
+            this.panelWin.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
+            this.panelWin.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.panelWin.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
+            this.panelWin.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
+            this.panelWin.Style.GradientAngle = 90;
+            this.panelWin.TabIndex = 4;
+            this.panelWin.Visible = false;
             // 
-            // buttonX4
+            // tabControl1
             // 
-            this.buttonX4.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.buttonX4.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonX4.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonX4.Location = new System.Drawing.Point(88, 0);
-            this.buttonX4.Name = "buttonX4";
-            this.buttonX4.Size = new System.Drawing.Size(32, 27);
-            this.buttonX4.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.buttonX4.TabIndex = 8;
-            this.buttonX4.Text = "刷新";
+            this.tabControl1.BackColor = System.Drawing.Color.Transparent;
+            this.tabControl1.CanReorderTabs = true;
+            this.tabControl1.CloseButtonPosition = DevComponents.DotNetBar.eTabCloseButtonPosition.Right;
+            this.tabControl1.Controls.Add(this.tabControlPanel1);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedTabFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold);
+            this.tabControl1.SelectedTabIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(876, 130);
+            this.tabControl1.Style = DevComponents.DotNetBar.eTabStripStyle.Office2007Dock;
+            this.tabControl1.TabAlignment = DevComponents.DotNetBar.eTabStripAlignment.Bottom;
+            this.tabControl1.TabIndex = 0;
+            this.tabControl1.TabLayoutType = DevComponents.DotNetBar.eTabLayoutType.FixedWithNavigationBox;
+            this.tabControl1.Tabs.Add(this.tabTask);
+            this.tabControl1.Text = "tabControl1";
             // 
-            // btnEnter
+            // tabControlPanel1
             // 
-            this.btnEnter.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnEnter.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnEnter.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnEnter.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnEnter.Location = new System.Drawing.Point(833, 0);
-            this.btnEnter.Name = "btnEnter";
-            this.btnEnter.Size = new System.Drawing.Size(43, 27);
-            this.btnEnter.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnEnter.TabIndex = 6;
-            this.btnEnter.Text = "打开";
-            this.btnEnter.Click += new System.EventHandler(this.btnEnter_Click);
+            this.tabControlPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tabControlPanel1.Name = "tabControlPanel1";
+            this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
+            this.tabControlPanel1.Size = new System.Drawing.Size(876, 127);
+            this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(254)))));
+            this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
+            this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
+            this.tabControlPanel1.Style.BorderColor.Color = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(165)))), ((int)(((byte)(199)))));
+            this.tabControlPanel1.Style.BorderSide = ((DevComponents.DotNetBar.eBorderSide)(((DevComponents.DotNetBar.eBorderSide.Left | DevComponents.DotNetBar.eBorderSide.Right) 
+            | DevComponents.DotNetBar.eBorderSide.Top)));
+            this.tabControlPanel1.Style.GradientAngle = -90;
+            this.tabControlPanel1.TabIndex = 1;
+            this.tabControlPanel1.TabItem = this.tabTask;
             // 
-            // btnNew
+            // tabTask
             // 
-            this.btnNew.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnNew.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnNew.Dock = System.Windows.Forms.DockStyle.Left;
-            this.btnNew.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnNew.Location = new System.Drawing.Point(56, 0);
-            this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(32, 27);
-            this.btnNew.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnNew.TabIndex = 4;
-            this.btnNew.Text = "新建";
-            // 
-            // buttonX2
-            // 
-            this.buttonX2.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.buttonX2.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonX2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonX2.Location = new System.Drawing.Point(28, 0);
-            this.buttonX2.Name = "buttonX2";
-            this.buttonX2.Size = new System.Drawing.Size(28, 27);
-            this.buttonX2.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.buttonX2.TabIndex = 3;
-            this.buttonX2.Text = "→";
-            // 
-            // buttonX1
-            // 
-            this.buttonX1.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.buttonX1.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.buttonX1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonX1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.buttonX1.Location = new System.Drawing.Point(0, 0);
-            this.buttonX1.Name = "buttonX1";
-            this.buttonX1.Size = new System.Drawing.Size(28, 27);
-            this.buttonX1.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.buttonX1.TabIndex = 2;
-            this.buttonX1.Text = "←";
-            // 
-            // panelEx2
-            // 
-            this.panelEx2.CanvasColor = System.Drawing.SystemColors.Control;
-            this.panelEx2.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.panelEx2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelEx2.Location = new System.Drawing.Point(0, 294);
-            this.panelEx2.Name = "panelEx2";
-            this.panelEx2.Size = new System.Drawing.Size(876, 130);
-            this.panelEx2.Style.Alignment = System.Drawing.StringAlignment.Center;
-            this.panelEx2.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
-            this.panelEx2.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
-            this.panelEx2.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
-            this.panelEx2.Style.BorderColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
-            this.panelEx2.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
-            this.panelEx2.Style.GradientAngle = 90;
-            this.panelEx2.TabIndex = 4;
+            this.tabTask.AttachedControl = this.tabControlPanel1;
+            this.tabTask.Name = "tabTask";
+            this.tabTask.Text = "下载";
             // 
             // expandableSplitter1
             // 
@@ -155,6 +109,8 @@
             this.expandableSplitter1.BackColor2SchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandableSplitter1.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.expandableSplitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.expandableSplitter1.ExpandableControl = this.panelWin;
+            this.expandableSplitter1.Expanded = false;
             this.expandableSplitter1.ExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
             this.expandableSplitter1.ExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandableSplitter1.ExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -175,7 +131,7 @@
             this.expandableSplitter1.HotGripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandableSplitter1.HotGripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(239)))), ((int)(((byte)(255)))));
             this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
-            this.expandableSplitter1.Location = new System.Drawing.Point(0, 288);
+            this.expandableSplitter1.Location = new System.Drawing.Point(0, 418);
             this.expandableSplitter1.Name = "expandableSplitter1";
             this.expandableSplitter1.Size = new System.Drawing.Size(876, 6);
             this.expandableSplitter1.Style = DevComponents.DotNetBar.eSplitterStyle.Office2007;
@@ -188,9 +144,9 @@
             this.panelEx3.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
             this.panelEx3.Controls.Add(this.tabBrowsers);
             this.panelEx3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelEx3.Location = new System.Drawing.Point(0, 27);
+            this.panelEx3.Location = new System.Drawing.Point(0, 0);
             this.panelEx3.Name = "panelEx3";
-            this.panelEx3.Size = new System.Drawing.Size(876, 261);
+            this.panelEx3.Size = new System.Drawing.Size(876, 418);
             this.panelEx3.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.panelEx3.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.panelEx3.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -206,22 +162,8 @@
             this.tabBrowsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabBrowsers.Location = new System.Drawing.Point(0, 0);
             this.tabBrowsers.Name = "tabBrowsers";
-            this.tabBrowsers.Size = new System.Drawing.Size(876, 261);
+            this.tabBrowsers.Size = new System.Drawing.Size(876, 418);
             this.tabBrowsers.TabIndex = 0;
-            // 
-            // tbUrl
-            // 
-            // 
-            // 
-            // 
-            this.tbUrl.Border.Class = "TextBoxBorder";
-            this.tbUrl.Border.CornerType = DevComponents.DotNetBar.eCornerType.Square;
-            this.tbUrl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbUrl.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tbUrl.Location = new System.Drawing.Point(120, 0);
-            this.tbUrl.Name = "tbUrl";
-            this.tbUrl.Size = new System.Drawing.Size(713, 26);
-            this.tbUrl.TabIndex = 9;
             // 
             // MainFrm
             // 
@@ -230,14 +172,14 @@
             this.ClientSize = new System.Drawing.Size(876, 424);
             this.Controls.Add(this.panelEx3);
             this.Controls.Add(this.expandableSplitter1);
-            this.Controls.Add(this.panelEx2);
-            this.Controls.Add(this.panelEx1);
-            this.DoubleBuffered = true;
+            this.Controls.Add(this.panelWin);
             this.Name = "MainFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "网页下载器";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.panelEx1.ResumeLayout(false);
+            this.panelWin.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.panelEx3.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -245,17 +187,13 @@
 
         #endregion
 
-        private DevComponents.DotNetBar.PanelEx panelEx1;
-        private DevComponents.DotNetBar.ButtonX buttonX1;
-        private DevComponents.DotNetBar.ButtonX buttonX2;
-        private DevComponents.DotNetBar.ButtonX btnNew;
-        private DevComponents.DotNetBar.ButtonX btnEnter;
-        private DevComponents.DotNetBar.PanelEx panelEx2;
+        private DevComponents.DotNetBar.PanelEx panelWin;
         private DevComponents.DotNetBar.ExpandableSplitter expandableSplitter1;
         private DevComponents.DotNetBar.PanelEx panelEx3;
-        private DevComponents.DotNetBar.ButtonX buttonX4;
         private Browser.TabBrowsers tabBrowsers;
-        private DevComponents.DotNetBar.Controls.TextBoxX tbUrl;
+        private DevComponents.DotNetBar.TabControl tabControl1;
+        private DevComponents.DotNetBar.TabControlPanel tabControlPanel1;
+        private DevComponents.DotNetBar.TabItem tabTask;
 
     }
 }

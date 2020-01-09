@@ -18,10 +18,5 @@ namespace WebDownloader
             InitializeComponent();
 
         }
-
-        private void btnEnter_Click(object sender, EventArgs e)
-        {
-            tabBrowsers.OpenUrl(this.tbUrl.Text.Trim());
-        }
     }
 }

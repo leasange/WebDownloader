@@ -8,20 +8,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp.WinForms;
+using CefSharp;
 
 namespace WebDownloader.Browser
 {
     public partial class CefWebBrowerX : UserControl
     {
-        public event EventHandler<NewWindowEventArgs> NewTabEvent;
+        public event EventHandler<NewWindowEventArgs> NewNavigateBrowser;
         public event EventHandler<CefSharp.LoadingStateChangedEventArgs> LoadingStateChanged;
+        public event EventHandler<CefSharp.FrameLoadStartEventArgs> FrameLoadStart;
+        public event EventHandler<CefSharp.FrameLoadEndEventArgs> FrameLoadEnd;
+        public event EventHandler CreateTab;
 
-        private ChromiumWebBrowser webBrowser=null;
+        public ChromiumWebBrowser webBrowser { get; private set; }
         public string WebName
         {
             get
             {
-                if (webBrowser == null || webBrowser.GetBrowser() == null || webBrowser.GetBrowser().MainFrame==null)
+                if (webBrowser == null || webBrowser.GetBrowser() == null || webBrowser.GetBrowser().MainFrame == null)
                 {
                     return "空页面";
                 }
@@ -29,10 +33,50 @@ namespace WebDownloader.Browser
                 return webBrowser.GetBrowser().MainFrame.Name;
             }
         }
+        static CefWebBrowerX()
+        {
+            var setting = new CefSettings()
+            {
+                Locale = "zh-CN",
+                AcceptLanguageList = "zh-CN",
+                MultiThreadedMessageLoop = true
+            };
+            CefSharp.Cef.Initialize(setting);
+            if (CefSharpSettings.ShutdownOnExit)
+            {
+                Application.ApplicationExit += OnApplicationExit;
+            } 
+        }
+        private static void OnApplicationExit(object sender, EventArgs e)
+        {
+            Cef.Shutdown();
+        }  
         public CefWebBrowerX()
         {
             InitializeComponent();
         }
+
+        private void btnEnter_Click(object sender, EventArgs e)
+        {
+            this.OpenUrl(this.tbUrl.Text.Trim());
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            if (CreateTab!=null)
+            {
+                CreateTab(this, e);
+            }
+        }
+
+        private void tbUrl_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.OpenUrl(this.tbUrl.Text.Trim());
+            }
+        }
+
 
         public void OpenUrl(string url)
         {
@@ -40,18 +84,62 @@ namespace WebDownloader.Browser
             {
                 url = "about:blank";
             }
-            if (webBrowser==null)
+            if (url == "about:blank")
+            {
+                url = "http://www.baidu.com";
+            }
+            if (webBrowser == null)
             {
                 webBrowser = new ChromiumWebBrowser(url);
                 webBrowser.LoadingStateChanged += webBrowser_LoadingStateChanged;
+                webBrowser.FrameLoadStart += webBrowser_FrameLoadStart;
+                webBrowser.FrameLoadEnd += webBrowser_FrameLoadEnd;
+                webBrowser.StatusMessage += webBrowser_StatusMessage;
+
                 var ceflife = new CefLifeSpanHandler();
                 ceflife.BeforePopupEvent += ceflife_BeforePopupEvent;
                 webBrowser.LifeSpanHandler = ceflife;
+                webBrowser.Dock = DockStyle.Fill;
+                this.panelBrowser.Controls.Add(webBrowser);
             }
             else
-            {
                 webBrowser.Load(url);
-            }
+        }
+
+        void webBrowser_StatusMessage(object sender, CefSharp.StatusMessageEventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                lbTips.Text = e.Value;
+            }));
+        }
+
+        private void webBrowser_FrameLoadStart(object sender, CefSharp.FrameLoadStartEventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                lbTips.Text = "正在加载:" + e.Url;
+                if (e.Frame.IsMain)
+                {
+                    tbUrl.Text = e.Frame.Url;
+                }
+                if (FrameLoadStart!=null)
+                {
+                    FrameLoadStart(this, e);
+                }
+            }));
+        }
+
+        private void webBrowser_FrameLoadEnd(object sender, CefSharp.FrameLoadEndEventArgs e)
+        {
+            this.Invoke(new Action(() =>
+            {
+                lbTips.Text = "结束加载:" + e.Url + ",结果:" + e.HttpStatusCode;
+                if (FrameLoadEnd!=null)
+                {
+                    FrameLoadEnd(this, e);
+                }
+            }));
         }
 
         private void ceflife_BeforePopupEvent(object sender, NewWindowEventArgs e)
@@ -63,15 +151,15 @@ namespace WebDownloader.Browser
                 case CefSharp.WindowOpenDisposition.IgnoreAction:
                     break;
                 case CefSharp.WindowOpenDisposition.NewBackgroundTab:
-                    OnNewTabEvent(e);
+                    OnNewNavigateBrowser(e);
                     break;
                 case CefSharp.WindowOpenDisposition.NewForegroundTab:
-                    OnNewTabEvent(e);
+                    OnNewNavigateBrowser(e);
                     break;
                 case CefSharp.WindowOpenDisposition.NewPopup:
                     break;
                 case CefSharp.WindowOpenDisposition.NewWindow:
-                    OnNewTabEvent(e);
+                    OnNewNavigateBrowser(e);
                     break;
                 case CefSharp.WindowOpenDisposition.OffTheRecord:
                     break;
@@ -88,7 +176,11 @@ namespace WebDownloader.Browser
 
         private void webBrowser_LoadingStateChanged(object sender, CefSharp.LoadingStateChangedEventArgs e)
         {
-            if (LoadingStateChanged!=null)
+            this.Invoke(new Action(() =>
+           {
+               lbTips.Text = e.IsLoading ? "正在加载中..." : "加载完毕";
+           }));
+            if (LoadingStateChanged != null)
             {
                 this.Invoke(new Action(() =>
                     {
@@ -100,15 +192,15 @@ namespace WebDownloader.Browser
         {
         }
 
-        protected void OnNewTabEvent(NewWindowEventArgs e)
+        protected void OnNewNavigateBrowser(NewWindowEventArgs e)
         {
             this.Invoke(new Action(() =>
                 {
-                    if (NewTabEvent == null)
+                    if (NewNavigateBrowser == null)
                     {
                         return;
                     }
-                    NewTabEvent(this, e);
+                    NewNavigateBrowser(this, e);
                 }));
         }
     }

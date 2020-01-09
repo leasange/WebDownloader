@@ -17,21 +17,5 @@ namespace WebDownloader.Control
         {
             InitializeComponent();
         }
-        protected override void OnPaint(PaintEventArgs e)
-        {
-           // base.OnPaint(e);
-        }
-        /*private SuperTabItem CreateTab()
-        {
-            var superTabControlPanel = new DevComponents.DotNetBar.SuperTabControlPanel();
-            superTabControlPanel.Dock = DockStyle.Fill;
-            SuperTabItem superTabItem = new SuperTabItem();
-            superTabItem.AttachedControl = superTabControlPanel;
-            superTabControlPanel.TabItem = superTabItem;
-            this.Tabs.Add(superTabItem);
-            this.Controls.Add(superTabControlPanel);
-            this.SelectedTab = superTabItem;
-            return superTabItem;
-        }*/
     }
 }

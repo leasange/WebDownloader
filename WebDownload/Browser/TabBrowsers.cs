@@ -8,22 +8,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DevComponents.DotNetBar;
+using WebDownloader.Control;
 
 namespace WebDownloader.Browser
 {
     public partial class TabBrowsers : UserControl
     {
+        public SuperTabControlX SuperTabControlX
+        {
+            get { return this.superTabControlX; }
+        }
+
         public TabBrowsers()
         {
             InitializeComponent();
         }
 
-        private CefWebBrowerX NewBrowser(string url=null)
+        public CefWebBrowerX NewBrowser(string url=null)
         {
             try
             {
                 var superItem = new SuperTabItem();
                 superItem.Text = "空白页";
+                superItem.TabFont = new Font("微软雅黑", 9f);
                 SuperTabControlPanel superTabControlPanel = new SuperTabControlPanel();
 
                 superItem.AttachedControl = superTabControlPanel;
@@ -39,6 +46,11 @@ namespace WebDownloader.Browser
                 this.superTabControlX.Controls.Add(superTabControlPanel);
                 this.superTabControlX.SelectedTab = superItem;
 
+                cefWebBrowerX.NewNavigateBrowser += cefWebBrowerX_NewTabEvent;
+                cefWebBrowerX.LoadingStateChanged += cefWebBrowerX_LoadingStateChanged;
+                cefWebBrowerX.FrameLoadStart += cefWebBrowerX_FrameLoadStart;
+                cefWebBrowerX.CreateTab += cefWebBrowerX_CreateTab;
+
                 cefWebBrowerX.OpenUrl(url);
                 return cefWebBrowerX;
             }
@@ -48,6 +60,59 @@ namespace WebDownloader.Browser
             }
         }
 
+        private void cefWebBrowerX_CreateTab(object sender, EventArgs e)
+        {
+            NewBrowser();
+        }
+        private SuperTabItem GetTabItem(CefWebBrowerX cefWebBrowerX)
+        {
+            foreach (SuperTabItem item in this.superTabControlX.Tabs)
+            {
+                var browser = item.AttachedControl.Controls[0] as CefWebBrowerX;
+                if (browser != null && browser == cefWebBrowerX)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+        private void cefWebBrowerX_FrameLoadStart(object sender, CefSharp.FrameLoadStartEventArgs e)
+        {
+            if (e.Frame.IsMain)
+            {
+                SuperTabItem item = GetTabItem((CefWebBrowerX)sender);
+                if (item == null)
+                {
+                    return;
+                }
+                
+            }
+        }
+
+        private void cefWebBrowerX_LoadingStateChanged(object sender, CefSharp.LoadingStateChangedEventArgs e)
+        {
+            var cefWebBrowerX = (CefWebBrowerX)sender;
+            SuperTabItem item = GetTabItem(cefWebBrowerX);
+            if (item == null)
+            {
+                return;
+            }
+            if (e.IsLoading)
+            {
+                item.Text = "加载...";
+            }
+            else
+            {
+                item.Text = cefWebBrowerX.WebName;
+            }
+        }
+
+        private void cefWebBrowerX_NewTabEvent(object sender, NewWindowEventArgs e)
+        {
+           var cefBrowser =  NewBrowser(e.targetUrl);
+           e.newBrowser = cefBrowser.webBrowser;
+        }
+
         public void OpenUrl(string url)
         {
             CefWebBrowerX cefWebBrowerX = null;
@@ -55,12 +120,12 @@ namespace WebDownloader.Browser
             {
                 var  superItem = this.superTabControlX.SelectedTab;
                 cefWebBrowerX = superItem.AttachedControl.Controls[0] as CefWebBrowerX;
+                cefWebBrowerX.OpenUrl(url);
             }
             else
             {
-                cefWebBrowerX = NewBrowser();
+                cefWebBrowerX = NewBrowser(url);
             }
-            cefWebBrowerX.OpenUrl(url);
         }
 
         private void TabBrowsers_Load(object sender, EventArgs e)
@@ -69,6 +134,20 @@ namespace WebDownloader.Browser
             {
                 this.superTabControlX.Tabs.Clear();
                 NewBrowser("about:blank");
+            }
+        }
+
+        private void superTabControlX_SelectedTabChanged(object sender, SuperTabStripSelectedTabChangedEventArgs e)
+        {
+
+        }
+
+        private void superTabControlX_TabItemClose(object sender, SuperTabStripTabItemCloseEventArgs e)
+        {
+            if (superTabControlX.Tabs.Count <= 1)
+            {
+                e.Cancel = true;
+                OpenUrl(null);
             }
         }
     }
