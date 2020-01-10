@@ -99,6 +99,7 @@ namespace WebDownloader.Browser
                 webBrowser.FrameLoadEnd += webBrowser_FrameLoadEnd;
                 webBrowser.StatusMessage += webBrowser_StatusMessage;
                 webBrowser.TitleChanged += webBrowser_TitleChanged;
+                webBrowser.AddressChanged += webBrowser_AddressChanged;
 
                 var ceflife = new CefLifeSpanHandler();
                 ceflife.BeforePopupEvent += ceflife_BeforePopupEvent;
@@ -116,6 +117,14 @@ namespace WebDownloader.Browser
                 webBrowser.Load(url);
         }
 
+        private void webBrowser_AddressChanged(object sender, AddressChangedEventArgs e)
+        {
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
+            {
+                tbUrl.Text = e.Address;
+            }));
+        }
+
         private void webBrowser_TitleChanged(object sender, TitleChangedEventArgs e)
         {
             if (TitleChanged!=null)
@@ -126,7 +135,7 @@ namespace WebDownloader.Browser
 
         private void webBrowser_StatusMessage(object sender, CefSharp.StatusMessageEventArgs e)
         {
-            this.Invoke(new Action(() =>
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
             {
                 lbTips.Text = e.Value;
             }));
@@ -134,7 +143,7 @@ namespace WebDownloader.Browser
 
         private void webBrowser_FrameLoadStart(object sender, CefSharp.FrameLoadStartEventArgs e)
         {
-            this.Invoke(new Action(() =>
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
             {
                 lbTips.Text = "正在加载:" + e.Url;
                 if (FrameLoadStart!=null)
@@ -146,15 +155,15 @@ namespace WebDownloader.Browser
 
         private void webBrowser_FrameLoadEnd(object sender, CefSharp.FrameLoadEndEventArgs e)
         {
-            this.Invoke(new Action(() =>
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
             {
                 try
                 {
                     lbTips.Text = "结束加载:" + e.Url + ",结果:" + e.HttpStatusCode;
-                    if (e.Frame.IsMain)
+                    /*if (e.Frame.IsMain)
                     {
                         tbUrl.Text = e.Frame.Url;
-                    }
+                    }*/
                     if (FrameLoadEnd != null)
                     {
                         FrameLoadEnd(this, e);
@@ -208,12 +217,11 @@ namespace WebDownloader.Browser
 
         private void webBrowser_LoadingStateChanged(object sender, CefSharp.LoadingStateChangedEventArgs e)
         {
-            this.Invoke(new Action(() =>
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
            {
                try
                {
                    lbTips.Text = e.IsLoading ? "正在加载中..." : "加载完毕";
-                   tbUrl.Text = e.Browser.MainFrame.Url;
                    if (LoadingStateChanged != null)
                    {
                        LoadingStateChanged(this, e);
@@ -231,7 +239,7 @@ namespace WebDownloader.Browser
 
         protected void OnNewNavigateBrowser(NewWindowEventArgs e)
         {
-            this.Invoke(new Action(() =>
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
                 {
                     if (NewNavigateBrowser == null)
                     {
@@ -239,6 +247,31 @@ namespace WebDownloader.Browser
                     }
                     NewNavigateBrowser(this, e);
                 }));
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            if (webBrowser!=null)
+            {
+                webBrowser.Back();
+            }
+
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (webBrowser != null)
+            {
+                webBrowser.Forward();
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            if (webBrowser != null)
+            {
+                webBrowser.Reload(true);
+            }
         }
     }
 }

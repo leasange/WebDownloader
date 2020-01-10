@@ -67,7 +67,7 @@ namespace WebDownloader.Browser
 
         private void cefWebBrowerX_TitleChanged(object sender, CefSharp.TitleChangedEventArgs e)
         {
-            this.Invoke(new Action(() =>
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
                 {
                     var item = GetTabItem((CefWebBrowerX)sender);
                     if (item != null)
