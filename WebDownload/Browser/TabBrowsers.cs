@@ -27,7 +27,7 @@ namespace WebDownloader.Browser
             InitializeComponent();
         }
 
-        public CefWebBrowerX NewBrowser(string url=null)
+        public CefWebBrowerX NewBrowser(string url=null,bool selected=false)
         {
             try
             {
@@ -50,7 +50,10 @@ namespace WebDownloader.Browser
 
                 superTabControlPanel.Controls.Add(cefWebBrowerX);
                 this.superTabControlX.Tabs.Add(superItem);
-                this.superTabControlX.SelectedTab = superItem;
+                if (selected)
+                {
+                    this.superTabControlX.SelectedTab = superItem;
+                }
                 this.superTabControlX.Controls.Add(superTabControlPanel);
 
                 cefWebBrowerX.OpenUrl(url);
@@ -82,9 +85,9 @@ namespace WebDownloader.Browser
                 }));
         }
 
-        private void cefWebBrowerX_CreateTab(object sender, EventArgs e)
+        private void cefWebBrowerX_CreateTab(object sender, CreateTabEventArgs e)
         {
-            NewBrowser();
+            NewBrowser(e.url,e.selected);
         }
         private SuperTabItem GetTabItem(CefWebBrowerX cefWebBrowerX)
         {
@@ -131,7 +134,7 @@ namespace WebDownloader.Browser
 
         private void cefWebBrowerX_NewTabEvent(object sender, NewWindowEventArgs e)
         {
-           var cefBrowser =  NewBrowser(e.targetUrl);
+           var cefBrowser =  NewBrowser(e.targetUrl,true);
            e.newBrowser = cefBrowser.webBrowser;
         }
 
@@ -155,7 +158,7 @@ namespace WebDownloader.Browser
             if (!this.DesignMode)
             {
                 this.superTabControlX.Tabs.Clear();
-                NewBrowser("about:blank");
+                NewBrowser("about:blank",true);
             }
         }
 

@@ -10,9 +10,6 @@ namespace WebDownloader.CefHandler
     {
         protected override bool OnBeforeBrowse(CefSharp.IWebBrowser chromiumWebBrowser, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IRequest request, bool userGesture, bool isRedirect)
         {
-
-            Console.WriteLine(request.ResourceType);
-
             return base.OnBeforeBrowse(chromiumWebBrowser, browser, frame, request, userGesture, isRedirect);
         }
     }

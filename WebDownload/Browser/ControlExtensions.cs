@@ -17,31 +17,39 @@ namespace WebDownloader.Browser
         /// <param name="action">action to be performed on the control</param>
         public static void InvokeOnUiThreadIfRequired(this System.Windows.Forms.Control control, Action action)
         {
-            //See https://stackoverflow.com/questions/1874728/avoid-calling-invoke-when-the-control-is-disposed
-            //for background and some guidance when implementing your own version.
-            //No action
-            if (control.Disposing || control.IsDisposed || !control.IsHandleCreated)
+            try
             {
-                return;
-            }
-
-            if (control.InvokeRequired)
-            {
-                control.Invoke((Action)(() =>
+                //See https://stackoverflow.com/questions/1874728/avoid-calling-invoke-when-the-control-is-disposed
+                //for background and some guidance when implementing your own version.
+                //No action
+                if (control.Disposing || control.IsDisposed || !control.IsHandleCreated)
                 {
-                    //No action
-                    if (control.Disposing || control.IsDisposed || !control.IsHandleCreated)
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    action();
-                }));
+                if (control.InvokeRequired)
+                {
+                    control.Invoke((Action)(() =>
+                    {
+                        //No action
+                        if (control.Disposing || control.IsDisposed || !control.IsHandleCreated)
+                        {
+                            return;
+                        }
+
+                        action();
+                    }));
+                }
+                else
+                {
+                    action.Invoke();
+                }
             }
-            else
+            catch (Exception)
             {
-                action.Invoke();
+                 
             }
+          
         }
     }
 }

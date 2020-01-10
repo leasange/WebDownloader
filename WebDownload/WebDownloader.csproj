@@ -125,6 +125,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Browser\CefContainerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Browser\CefContainerControl.Designer.cs">
+      <DependentUpon>CefContainerControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Browser\CefWebBrowerX.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -132,11 +138,14 @@
       <DependentUpon>CefWebBrowerX.cs</DependentUpon>
     </Compile>
     <Compile Include="Browser\ControlExtensions.cs" />
+    <Compile Include="CefHandler\BeforeContextMenuEvenArgs.cs" />
+    <Compile Include="CefHandler\CefContextMenuHandler.cs" />
     <Compile Include="CefHandler\CefLifeSpanHandler.cs" />
     <Compile Include="CefHandler\CefRequestHandler.cs" />
     <Compile Include="CefHandler\CefResourceRequestHandler.cs" />
     <Compile Include="CefHandler\CefResourceRequestHandlerFactory.cs" />
     <Compile Include="CefHandler\CefResponseFilter.cs" />
+    <Compile Include="CefHandler\CreateTabEventArgs.cs" />
     <Compile Include="CefHandler\NewWindowEventArgs.cs" />
     <Compile Include="Browser\TabBrowsers.cs">
       <SubType>UserControl</SubType>

@@ -19,8 +19,9 @@ namespace WebDownloader.Browser
         public event EventHandler<CefSharp.LoadingStateChangedEventArgs> LoadingStateChanged;
         public event EventHandler<CefSharp.FrameLoadStartEventArgs> FrameLoadStart;
         public event EventHandler<CefSharp.FrameLoadEndEventArgs> FrameLoadEnd;
-        public event EventHandler CreateTab;
+        public event EventHandler<CreateTabEventArgs> CreateTab;
         public event EventHandler<TitleChangedEventArgs> TitleChanged;
+        private bool _isViewSource = false;
 
         public ChromiumWebBrowser webBrowser { get; private set; }
         public string WebName
@@ -67,7 +68,7 @@ namespace WebDownloader.Browser
         {
             if (CreateTab!=null)
             {
-                CreateTab(this, e);
+                CreateTab(this, new CreateTabEventArgs(true,""));
             }
         }
 
@@ -88,11 +89,21 @@ namespace WebDownloader.Browser
             }
             if (url == "about:blank")
             {
-                url = "http://www.baidu.com";
+                url = "https://www.baidu.com";
+            }
+            if (url.StartsWith("view-source:"))
+            {
+                _isViewSource = true;
+            }
+            else
+            {
+                _isViewSource = false;
             }
             if (webBrowser == null)
             {
                 webBrowser = new ChromiumWebBrowser(url);
+                webBrowser.ActivateBrowserOnCreation = true;
+                webBrowser.CreateControl();
                 tbUrl.Text = url;
                 webBrowser.LoadingStateChanged += webBrowser_LoadingStateChanged;
                 webBrowser.FrameLoadStart += webBrowser_FrameLoadStart;
@@ -107,6 +118,12 @@ namespace WebDownloader.Browser
                 var cefRequest = new CefRequestHandler();
                 webBrowser.RequestHandler = cefRequest;
 
+                var cefMenu = new CefContextMenuHandler();
+                cefMenu.BeforeContextMenu += cefMenu_BeforeContextMenu;
+                cefMenu.ViewSource += cefMenu_ViewSource;
+                cefMenu.ShowDevTool += cefMenu_ShowDevTool;
+                webBrowser.MenuHandler = cefMenu;
+
                 var resFact = new CefResourceRequestHandlerFactory();
                 webBrowser.ResourceRequestHandlerFactory = resFact;
 
@@ -114,14 +131,55 @@ namespace WebDownloader.Browser
                 this.panelBrowser.Controls.Add(webBrowser);
             }
             else
+            {
                 webBrowser.Load(url);
+            }
+        }
+
+        private void cefMenu_ShowDevTool(object sender, EventArgs e)
+        {
+            if (webBrowser==null)
+            {
+                return;
+            }
+            if (splitContainer.Panel2Collapsed)
+            {
+                splitContainer.Panel2Collapsed = false;
+            }
+            var rect = cefDevContainer.ClientRectangle;
+            var windowInfo = new WindowInfo();
+            windowInfo.SetAsChild(cefDevContainer.Handle, rect.Left, rect.Top, rect.Right, rect.Bottom);
+            webBrowser.GetBrowserHost().ShowDevTools(windowInfo);
+        }
+
+        private void cefMenu_BeforeContextMenu(object sender, BeforeContextMenuEvenArgs e)
+        {
+            e.model.SetEnabled(CefMenuCommand.ViewSource, !_isViewSource);
+        }
+
+        private void cefMenu_ViewSource(object sender, EventArgs e)
+        {
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
+            {
+                if (CreateTab!=null)
+                {
+                    CreateTab(this, new CreateTabEventArgs(true,"view-source:"+webBrowser.GetBrowser().MainFrame.Url));
+                }
+            }));
         }
 
         private void webBrowser_AddressChanged(object sender, AddressChangedEventArgs e)
         {
             this.InvokeOnUiThreadIfRequired(new Action(() =>
             {
-                tbUrl.Text = e.Address;
+                if (_isViewSource)
+                {
+                    tbUrl.Text ="view-source:" + e.Address;
+                }
+                else
+                {
+                    tbUrl.Text = e.Address;
+                }
             }));
         }
 
