@@ -12,9 +12,18 @@ namespace WebDownloader.Browser
 {
     public partial class CefContainerControl : UserControl
     {
+        public event EventHandler Close;
+        public DevComponents.DotNetBar.PanelEx CefContainer
+        {
+            get
+            {
+                return this.panelContaint;
+            }
+        }
         public CefContainerControl()
         {
             InitializeComponent();
+            this.CreateControl();
         }
         protected override bool IsInputKey(Keys keyData)
         {
@@ -43,5 +52,14 @@ namespace WebDownloader.Browser
 
             return base.IsInputKey(keyData);
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (Close!=null)
+            {
+                Close(this, e);
+            }
+        }
+
     }
 }

@@ -193,11 +193,12 @@
             this.panelBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBrowser.Location = new System.Drawing.Point(0, 0);
             this.panelBrowser.Name = "panelBrowser";
-            this.panelBrowser.Size = new System.Drawing.Size(518, 306);
+            this.panelBrowser.Size = new System.Drawing.Size(719, 306);
             this.panelBrowser.TabIndex = 5;
             // 
             // splitContainer
             // 
+            this.splitContainer.BackColor = System.Drawing.Color.PaleTurquoise;
             this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer.Location = new System.Drawing.Point(0, 26);
@@ -210,6 +211,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.cefDevContainer);
+            this.splitContainer.Panel2Collapsed = true;
             this.splitContainer.Size = new System.Drawing.Size(719, 306);
             this.splitContainer.SplitterDistance = 518;
             this.splitContainer.TabIndex = 6;
@@ -221,6 +223,8 @@
             this.cefDevContainer.Name = "cefDevContainer";
             this.cefDevContainer.Size = new System.Drawing.Size(197, 306);
             this.cefDevContainer.TabIndex = 0;
+            this.cefDevContainer.Close += new System.EventHandler(this.cefDevContainer_Close);
+            this.cefDevContainer.SizeChanged += new System.EventHandler(this.cefDevContainer_SizeChanged);
             // 
             // CefWebBrowerX
             // 

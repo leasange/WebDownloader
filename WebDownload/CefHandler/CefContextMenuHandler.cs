@@ -46,7 +46,10 @@ namespace WebDownloader.CefHandler
                     return true;
                 case (CefSharp.CefMenuCommand)OpenDevTool:
                     {
-                        // Clipboard.SetImage()
+                        if (ShowDevTool!=null)
+                        {
+                            ShowDevTool(this, new EventArgs());
+                        }
                     }
                     return true;
                 default:

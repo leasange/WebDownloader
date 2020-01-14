@@ -140,6 +140,7 @@
     <Compile Include="Browser\ControlExtensions.cs" />
     <Compile Include="CefHandler\BeforeContextMenuEvenArgs.cs" />
     <Compile Include="CefHandler\CefContextMenuHandler.cs" />
+    <Compile Include="CefHandler\CefDownloadHandler.cs" />
     <Compile Include="CefHandler\CefLifeSpanHandler.cs" />
     <Compile Include="CefHandler\CefRequestHandler.cs" />
     <Compile Include="CefHandler\CefResourceRequestHandler.cs" />
@@ -168,6 +169,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Browser\CefContainerControl.resx">
+      <DependentUpon>CefContainerControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Browser\CefWebBrowerX.resx">
       <DependentUpon>CefWebBrowerX.cs</DependentUpon>
     </EmbeddedResource>
