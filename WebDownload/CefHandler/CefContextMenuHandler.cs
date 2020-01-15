@@ -12,6 +12,7 @@ namespace WebDownloader.CefHandler
         public event EventHandler<BeforeContextMenuEvenArgs> BeforeContextMenu;
         public event EventHandler ViewSource;
         public event EventHandler ShowDevTool;
+        public event EventHandler<CopyImageEventArgs> CopyImageToClipboard;
 
         private const int CopyImage = (int)CefSharp.CefMenuCommand.UserFirst + 1;//复制图片
         private const int OpenDevTool =(int)CefSharp.CefMenuCommand.UserFirst + 2;//开发工具
@@ -26,7 +27,7 @@ namespace WebDownloader.CefHandler
             {
                 model.AddItem((CefSharp.CefMenuCommand)CopyImage, "复制图片");
             }
-            model.AddItem((CefSharp.CefMenuCommand)OpenDevTool, "开发着工具");
+            model.AddItem((CefSharp.CefMenuCommand)OpenDevTool, "开发者工具 F12");
         }
 
         public bool OnContextMenuCommand(CefSharp.IWebBrowser chromiumWebBrowser, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.CefMenuCommand commandId, CefSharp.CefEventFlags eventFlags)
@@ -41,7 +42,10 @@ namespace WebDownloader.CefHandler
                     return true;
                 case (CefSharp.CefMenuCommand)CopyImage:
                     {
-                       // Clipboard.SetImage()
+                        if (CopyImageToClipboard!=null)
+                        {
+                            CopyImageToClipboard(this, new CopyImageEventArgs(parameters.SourceUrl));
+                        }
                     }
                     return true;
                 case (CefSharp.CefMenuCommand)OpenDevTool:

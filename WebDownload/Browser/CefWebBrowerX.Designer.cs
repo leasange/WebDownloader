@@ -99,6 +99,8 @@
             // 
             // tbUrl
             // 
+            this.tbUrl.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.tbUrl.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.HistoryList;
             // 
             // 
             // 
@@ -193,7 +195,7 @@
             this.panelBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBrowser.Location = new System.Drawing.Point(0, 0);
             this.panelBrowser.Name = "panelBrowser";
-            this.panelBrowser.Size = new System.Drawing.Size(719, 306);
+            this.panelBrowser.Size = new System.Drawing.Size(511, 306);
             this.panelBrowser.TabIndex = 5;
             // 
             // splitContainer
@@ -211,9 +213,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.cefDevContainer);
-            this.splitContainer.Panel2Collapsed = true;
             this.splitContainer.Size = new System.Drawing.Size(719, 306);
-            this.splitContainer.SplitterDistance = 518;
+            this.splitContainer.SplitterDistance = 511;
             this.splitContainer.TabIndex = 6;
             // 
             // cefDevContainer
@@ -221,9 +222,10 @@
             this.cefDevContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cefDevContainer.Location = new System.Drawing.Point(0, 0);
             this.cefDevContainer.Name = "cefDevContainer";
-            this.cefDevContainer.Size = new System.Drawing.Size(197, 306);
+            this.cefDevContainer.Size = new System.Drawing.Size(204, 306);
             this.cefDevContainer.TabIndex = 0;
             this.cefDevContainer.Close += new System.EventHandler(this.cefDevContainer_Close);
+            this.cefDevContainer.ChangeDockPosition += new System.EventHandler(this.cefDevContainer_ChangeDockPosition);
             this.cefDevContainer.SizeChanged += new System.EventHandler(this.cefDevContainer_SizeChanged);
             // 
             // CefWebBrowerX

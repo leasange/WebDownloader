@@ -12,6 +12,7 @@ using CefSharp;
 using WebDownloader.CefHandler;
 using System.Runtime.InteropServices;
 
+
 namespace WebDownloader.Browser
 {
     public partial class CefWebBrowerX : UserControl
@@ -22,9 +23,10 @@ namespace WebDownloader.Browser
         public event EventHandler<CefSharp.FrameLoadEndEventArgs> FrameLoadEnd;
         public event EventHandler<CreateTabEventArgs> CreateTab;
         public event EventHandler<TitleChangedEventArgs> TitleChanged;
+
         private bool _isViewSource = false;
 
-        public ChromiumWebBrowser webBrowser { get; private set; }
+        public ChromiumWebBrowserX webBrowser { get; private set; }
         public string WebName
         {
             get
@@ -58,6 +60,7 @@ namespace WebDownloader.Browser
         public CefWebBrowerX()
         {
             InitializeComponent();
+            splitContainer.Panel2Collapsed = true;
         }
 
         private void btnEnter_Click(object sender, EventArgs e)
@@ -102,7 +105,7 @@ namespace WebDownloader.Browser
             }
             if (webBrowser == null)
             {
-                webBrowser = new ChromiumWebBrowser(url);
+                webBrowser = new ChromiumWebBrowserX(url);
                 webBrowser.ActivateBrowserOnCreation = true;
                 webBrowser.CreateControl();
                 tbUrl.Text = url;
@@ -123,6 +126,7 @@ namespace WebDownloader.Browser
                 cefMenu.BeforeContextMenu += cefMenu_BeforeContextMenu;
                 cefMenu.ViewSource += cefMenu_ViewSource;
                 cefMenu.ShowDevTool += cefMenu_ShowDevTool;
+                cefMenu.CopyImageToClipboard += cefMenu_CopyImageToClipboard;
                 webBrowser.MenuHandler = cefMenu;
 
                 var resFact = new CefResourceRequestHandlerFactory();
@@ -130,8 +134,11 @@ namespace WebDownloader.Browser
 
 
                 webBrowser.DownloadHandler = new CefDownloadHandler();
+                webBrowser.KeyboardHandler = new CefKeyboardHandler();
 
                 webBrowser.Dock = DockStyle.Fill;
+                webBrowser.PreviewKeyDown += webBrowser_PreviewKeyDown;
+
                 this.panelBrowser.Controls.Add(webBrowser);
             }
             else
@@ -140,24 +147,79 @@ namespace WebDownloader.Browser
             }
         }
 
+        private void cefMenu_CopyImageToClipboard(object sender, CopyImageEventArgs e)
+        {
+            DownloadObject dobj = new DownloadObject(e.url, ResourceType.Image,null,new StreamFinishCallBack((obj)=>
+            {
+                Image image = Image.FromStream(obj.streamSave);
+                Clipboard.SetImage(image);
+                image.Dispose();
+            }));
+            CefResourceRequestHandler.RegisterDownloadObject(dobj);
+
+            webBrowser.GetBrowserHost().StartDownload(e.url);
+        }
+
+        protected void webBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Console.WriteLine("webBrowser_PreviewKeyDown:" + e.Modifiers + "+" + e.KeyCode);
+            if (e.Modifiers== Keys.None||e.KeyCode==Keys.F12)
+            {
+                if (cefDevContainer.Tag!=null)
+                {
+                    CloseDevTools();
+                }
+                else
+                {
+                    ShowDevTools();
+                }
+            }
+        }
+        public void ShowDevTools()
+        {
+            if (webBrowser == null)
+            {
+                return;
+            }
+            if (splitContainer.Panel2Collapsed)
+            {
+                splitContainer.Panel2Collapsed = false;
+                if (splitContainer.Orientation == Orientation.Horizontal)
+                {
+                    splitContainer.SplitterDistance = this.Height - 300;
+                }
+                else
+                {
+                    splitContainer.SplitterDistance = this.Width - 300;
+                }
+            }
+            var rect = cefDevContainer.CefContainer.ClientRectangle;
+            var windowInfo = new WindowInfo();
+            windowInfo.SetAsChild(cefDevContainer.CefContainer.Handle, rect.Left, rect.Top, rect.Right, rect.Bottom);
+            webBrowser.GetBrowserHost().ShowDevTools(windowInfo);
+            cefDevContainer.Tag = windowInfo;
+        }
+        public void CloseDevTools()
+        {
+            if (cefDevContainer.Tag != null)
+            {
+                IntPtr ptr = GetWindow(cefDevContainer.CefContainer.Handle, GetWindowCmd.GW_CHILD);
+                if (ptr != IntPtr.Zero)
+                {
+                    SetParent(ptr, IntPtr.Zero);
+                    //SendMessage(ptr, WM_CLOSE, 0, 0);
+                    webBrowser.GetBrowserHost().CloseDevTools();
+                }
+                cefDevContainer.Tag = null;
+            }
+            splitContainer.Panel2Collapsed = true;
+        }
 
         private void cefMenu_ShowDevTool(object sender, EventArgs e)
         {
             this.InvokeOnUiThreadIfRequired(new Action(() =>
             {
-                if (webBrowser == null)
-                {
-                    return;
-                }
-                if (splitContainer.Panel2Collapsed)
-                {
-                    splitContainer.Panel2Collapsed = false;
-                }
-                var rect = cefDevContainer.CefContainer.ClientRectangle;
-                var windowInfo = new WindowInfo();
-                windowInfo.SetAsChild(cefDevContainer.CefContainer.Handle, rect.Left, rect.Top, rect.Right, rect.Bottom);
-                webBrowser.GetBrowserHost().ShowDevTools(windowInfo);
-                cefDevContainer.Tag = windowInfo;
+                ShowDevTools();
             }));
         }
 
@@ -288,6 +350,19 @@ namespace WebDownloader.Browser
            {
                try
                {
+                   btnBack.Enabled = e.Browser.CanGoBack;
+                   btnNext.Enabled = e.Browser.CanGoForward;
+
+                   if (e.IsLoading)
+                   {
+                       btnRefresh.Text = "终止";
+                       btnRefresh.Tooltip = "终止加载";
+                   }
+                   else
+                   {
+                       btnRefresh.Text = "刷新";
+                       btnRefresh.Tooltip = "刷新页面";
+                   }
                    lbTips.Text = e.IsLoading ? "正在加载中..." : "加载完毕";
                    if (LoadingStateChanged != null)
                    {
@@ -322,7 +397,6 @@ namespace WebDownloader.Browser
             {
                 webBrowser.Back();
             }
-
         }
 
         private void btnNext_Click(object sender, EventArgs e)
@@ -337,7 +411,14 @@ namespace WebDownloader.Browser
         {
             if (webBrowser != null)
             {
-                webBrowser.Reload(true);
+                if (webBrowser.IsLoading)
+                {
+                    webBrowser.Stop();
+                }
+                else
+                {
+                    webBrowser.Reload(true);
+                }
             }
         }
 
@@ -424,18 +505,20 @@ namespace WebDownloader.Browser
 
         private void cefDevContainer_Close(object sender, EventArgs e)
         {
-            if (cefDevContainer.Tag != null)
+            CloseDevTools();
+        }
+
+        private void cefDevContainer_ChangeDockPosition(object sender, EventArgs e)
+        {
+            splitContainer.Orientation = splitContainer.Orientation == Orientation.Horizontal ? Orientation.Vertical : Orientation.Horizontal;
+            if (splitContainer.Orientation== Orientation.Horizontal)
             {
-                IntPtr ptr = GetWindow(cefDevContainer.CefContainer.Handle, GetWindowCmd.GW_CHILD);
-                if (ptr != IntPtr.Zero)
-                {
-                    SetParent(ptr, IntPtr.Zero);
-                    //SendMessage(ptr, WM_CLOSE, 0, 0);
-                    webBrowser.GetBrowserHost().CloseDevTools();
-                }
-                cefDevContainer.Tag = null;
+                splitContainer.SplitterDistance = this.Height - 300;
             }
-            splitContainer.Panel2Collapsed = true;
+            else
+            {
+                splitContainer.SplitterDistance = this.Width - 300;
+            }
         }
     }
 }

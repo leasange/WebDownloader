@@ -13,6 +13,7 @@ namespace WebDownloader.Browser
     public partial class CefContainerControl : UserControl
     {
         public event EventHandler Close;
+        public event EventHandler ChangeDockPosition;
         public DevComponents.DotNetBar.PanelEx CefContainer
         {
             get
@@ -58,6 +59,14 @@ namespace WebDownloader.Browser
             if (Close!=null)
             {
                 Close(this, e);
+            }
+        }
+
+        private void btnDockPosition_Click(object sender, EventArgs e)
+        {
+            if (ChangeDockPosition!=null)
+            {
+                ChangeDockPosition(this, e);                
             }
         }
 

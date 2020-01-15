@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.panelEx1 = new DevComponents.DotNetBar.PanelEx();
-            this.panelContaint = new DevComponents.DotNetBar.PanelEx();
             this.btnClose = new DevComponents.DotNetBar.ButtonX();
+            this.panelContaint = new DevComponents.DotNetBar.PanelEx();
+            this.btnDockPosition = new DevComponents.DotNetBar.ButtonX();
             this.panelEx1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,6 +39,7 @@
             // 
             this.panelEx1.CanvasColor = System.Drawing.SystemColors.Control;
             this.panelEx1.ColorSchemeStyle = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.panelEx1.Controls.Add(this.btnDockPosition);
             this.panelEx1.Controls.Add(this.btnClose);
             this.panelEx1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelEx1.Font = new System.Drawing.Font("微软雅黑", 7.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -53,6 +55,22 @@
             this.panelEx1.Style.GradientAngle = 90;
             this.panelEx1.TabIndex = 0;
             this.panelEx1.Text = "开发者工具";
+            // 
+            // btnClose
+            // 
+            this.btnClose.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnClose.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnClose.Location = new System.Drawing.Point(375, 0);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Shape = new DevComponents.DotNetBar.RoundRectangleShapeDescriptor(2);
+            this.btnClose.Size = new System.Drawing.Size(17, 16);
+            this.btnClose.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnClose.TabIndex = 0;
+            this.btnClose.Text = "x";
+            this.btnClose.Tooltip = "关闭";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // panelContaint
             // 
@@ -71,21 +89,21 @@
             this.panelContaint.Style.GradientAngle = 90;
             this.panelContaint.TabIndex = 1;
             // 
-            // btnClose
+            // btnDockPosition
             // 
-            this.btnClose.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
-            this.btnClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.btnClose.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
-            this.btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            this.btnClose.Location = new System.Drawing.Point(375, 0);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Shape = new DevComponents.DotNetBar.RoundRectangleShapeDescriptor(2);
-            this.btnClose.Size = new System.Drawing.Size(17, 16);
-            this.btnClose.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
-            this.btnClose.TabIndex = 0;
-            this.btnClose.Text = "x";
-            this.btnClose.Tooltip = "关闭";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnDockPosition.AccessibleRole = System.Windows.Forms.AccessibleRole.PushButton;
+            this.btnDockPosition.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnDockPosition.ColorTable = DevComponents.DotNetBar.eButtonColor.OrangeWithBackground;
+            this.btnDockPosition.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnDockPosition.Location = new System.Drawing.Point(358, 0);
+            this.btnDockPosition.Name = "btnDockPosition";
+            this.btnDockPosition.Shape = new DevComponents.DotNetBar.RoundRectangleShapeDescriptor(2);
+            this.btnDockPosition.Size = new System.Drawing.Size(17, 16);
+            this.btnDockPosition.Style = DevComponents.DotNetBar.eDotNetBarStyle.StyleManagerControlled;
+            this.btnDockPosition.TabIndex = 1;
+            this.btnDockPosition.Text = "__|";
+            this.btnDockPosition.Tooltip = "停靠位置";
+            this.btnDockPosition.Click += new System.EventHandler(this.btnDockPosition_Click);
             // 
             // CefContainerControl
             // 
@@ -105,5 +123,6 @@
         private DevComponents.DotNetBar.PanelEx panelEx1;
         private DevComponents.DotNetBar.PanelEx panelContaint;
         private DevComponents.DotNetBar.ButtonX btnClose;
+        private DevComponents.DotNetBar.ButtonX btnDockPosition;
     }
 }
