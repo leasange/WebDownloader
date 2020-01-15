@@ -46,6 +46,7 @@ namespace WebDownloader.CefHandler
                         {
                             CopyImageToClipboard(this, new CopyImageEventArgs(parameters.SourceUrl));
                         }
+                        browser.GetHost().StartDownload(parameters.SourceUrl);
                     }
                     return true;
                 case (CefSharp.CefMenuCommand)OpenDevTool:

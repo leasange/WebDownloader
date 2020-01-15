@@ -46,35 +46,6 @@ namespace WebDownloader.CefHandler
                 {
                     return true;
                 }
-                if (!downloadObject.isCache)
-                {
-                    if (downloadObject.callback != null && downloadObject.streamSave == null)
-                    {
-                        downloadObject.streamSave = new MemoryStream();
-                    }
-                    return true;
-                }
-
-                Uri uri = new Uri(downloadObject.url);
-
-                string host = uri.Host/*.Replace('.', '_')*/;
-                string file = Path.Combine(Application.StartupPath, "WebCaches", host, uri.LocalPath.Trim('/')).Replace('\\', '/').TrimEnd('/');
-                string name = Path.GetFileName(file);
-                string path = file.Substring(0, file.Length - name.Length - 1);
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                /*if (!name.Contains('.'))
-                {
-                    name = name + ".jpg";
-                }*/
-                file = Path.Combine(path, name);
-                if (File.Exists(file))
-                {
-                    return true; 
-                }
-                downloadObject.streamSave = File.OpenWrite(file);
             }
             catch (Exception ex)
             {
@@ -91,19 +62,7 @@ namespace WebDownloader.CefHandler
                 {
                     return;
                 }
-                if (downloadObject.callback != null)
-                {
-                    downloadObject.callback.BeginInvoke(downloadObject, null, null);
-                }
-                else
-                {
-                    if (downloadObject.streamSave != null)
-                    {
-                        downloadObject.streamSave.Flush();
-                        downloadObject.streamSave.Close();
-                        downloadObject.streamSave.Dispose();
-                    }
-                }
+                downloadObject.Finish();
             }
             catch (Exception)
             { 

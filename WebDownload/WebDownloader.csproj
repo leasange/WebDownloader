@@ -155,6 +155,7 @@
     <Compile Include="CefHandler\CefResponseFilter.cs" />
     <Compile Include="CefHandler\CopyImageEventArgs.cs" />
     <Compile Include="CefHandler\CreateTabEventArgs.cs" />
+    <Compile Include="CefHandler\DownloadManager.cs" />
     <Compile Include="CefHandler\DownloadObject.cs" />
     <Compile Include="CefHandler\NewWindowEventArgs.cs" />
     <Compile Include="Browser\TabBrowsers.cs">

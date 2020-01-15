@@ -149,21 +149,15 @@ namespace WebDownloader.Browser
 
         private void cefMenu_CopyImageToClipboard(object sender, CopyImageEventArgs e)
         {
-            DownloadObject dobj = new DownloadObject(e.url, ResourceType.Image,null,new StreamFinishCallBack((obj)=>
-            {
-                Image image = Image.FromStream(obj.streamSave);
-                Clipboard.SetImage(image);
-                image.Dispose();
-            }));
-            CefResourceRequestHandler.RegisterDownloadObject(dobj);
-
+            DownloadObject dobj = new DownloadObject(e.url, ResourceType.Image, DownloadToWhere.ClipBoard);
+            DownloadManager.RegisterDownloadObject(dobj);
             webBrowser.GetBrowserHost().StartDownload(e.url);
         }
 
         protected void webBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             Console.WriteLine("webBrowser_PreviewKeyDown:" + e.Modifiers + "+" + e.KeyCode);
-            if (e.Modifiers== Keys.None||e.KeyCode==Keys.F12)
+            if (e.Modifiers== Keys.None&&e.KeyCode==Keys.F12)
             {
                 if (cefDevContainer.Tag!=null)
                 {
