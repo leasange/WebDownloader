@@ -25,7 +25,7 @@ namespace WebDownloader.CefHandler
             model.AddSeparator();
             if (parameters.MediaType == CefSharp.ContextMenuMediaType.Image)
             {
-                model.AddItem((CefSharp.CefMenuCommand)CopyImage, "复制图片");
+                model.AddItem((CefSharp.CefMenuCommand)CopyImage, "复制图片(&C)");
             }
             model.AddItem((CefSharp.CefMenuCommand)OpenDevTool, "开发者工具 F12");
         }
@@ -46,7 +46,6 @@ namespace WebDownloader.CefHandler
                         {
                             CopyImageToClipboard(this, new CopyImageEventArgs(parameters.SourceUrl));
                         }
-                        browser.GetHost().StartDownload(parameters.SourceUrl);
                     }
                     return true;
                 case (CefSharp.CefMenuCommand)OpenDevTool:

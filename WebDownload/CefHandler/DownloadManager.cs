@@ -13,7 +13,18 @@ namespace WebDownloader.CefHandler
         {
             lock (registerDownloadObjects)
             {
-                registerDownloadObjects.RemoveAll(m => m.url == obj.url);
+                registerDownloadObjects.RemoveAll(m =>
+                {
+                    if (m.url==obj.url)
+                    {
+                        m.Finish();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                });
                 registerDownloadObjects.Add(obj);
             }
         }
@@ -37,7 +48,18 @@ namespace WebDownloader.CefHandler
         {
             lock (registerDownloadObjects)
             {
-                registerDownloadObjects.RemoveAll(m => m.url == url);
+                registerDownloadObjects.RemoveAll(m =>
+                {
+                    if (m.url == url)
+                    {
+                        m.Finish();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                });
             }
         }
         public static void Remove(int id)
@@ -52,6 +74,15 @@ namespace WebDownloader.CefHandler
                     }
                     else return false;
                 });
+            }
+        }
+
+        internal static void Update(CefSharp.DownloadItem downloadItem)
+        {
+            var f = Find(downloadItem.Id);
+            if (f!=null)
+            {
+                f.downloadItem = downloadItem;
             }
         }
     }

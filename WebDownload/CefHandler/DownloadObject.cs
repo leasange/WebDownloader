@@ -21,6 +21,7 @@ namespace WebDownloader.CefHandler
     {
         public int Id;
         public string url;
+        public CefSharp.DownloadItem downloadItem = null;
         public DownloadToWhere toWhere { get; private set; }
         public string localPathFile { get; private set; }
         
@@ -30,7 +31,7 @@ namespace WebDownloader.CefHandler
 
         public StreamFinishCallBack callback = null;
 
-        private bool finish = false;
+        public bool finish { get; private set; }
         private bool isForceDownload = false;
         public DownloadObject(string url, CefSharp.ResourceType resType = CefSharp.ResourceType.Xhr, DownloadToWhere toWhere = DownloadToWhere.Cache, string pathFile = null, bool isForceDownload=false,StreamFinishCallBack callback = null)
         {
@@ -40,6 +41,7 @@ namespace WebDownloader.CefHandler
             this.localPathFile = pathFile;
             this.callback = callback;
             this.isForceDownload = isForceDownload;
+            this.finish = false;
             Uri uri = new Uri(this.url);
             string host = uri.Host/*.Replace('.', '_')*/;
             string file = Path.Combine(Application.StartupPath, "WebCaches", host, uri.LocalPath.Trim('/')).Replace('\\', '/').TrimEnd('/');
@@ -57,7 +59,7 @@ namespace WebDownloader.CefHandler
             {
                 Directory.CreateDirectory(path);
             }
-            file = Path.Combine(path, name);
+            file = Path.Combine(path, name).Replace('/','\\');
             this.localPathFile = file;
         }
 
