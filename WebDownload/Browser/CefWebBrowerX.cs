@@ -84,6 +84,11 @@ namespace WebDownloader.Browser
             }
         }
 
+        private void cefMenu_OpenLinkOrSource(object sender, OpenLinkOrSourceArgs e)
+        {
+            string url = (e.isOnlySource ? "view-source:" : "") + e.url;
+            OnNewNavigateBrowser(new NewWindowEventArgs(webBrowser, webBrowser.GetBrowser(), webBrowser.GetMainFrame(), url, null, WindowOpenDisposition.NewForegroundTab, null));
+        }
 
         public void OpenUrl(string url)
         {
@@ -127,6 +132,7 @@ namespace WebDownloader.Browser
                 cefMenu.ViewSource += cefMenu_ViewSource;
                 cefMenu.ShowDevTool += cefMenu_ShowDevTool;
                 cefMenu.CopyImageToClipboard += cefMenu_CopyImageToClipboard;
+                cefMenu.OpenLinkOrSource += cefMenu_OpenLinkOrSource;
                 webBrowser.MenuHandler = cefMenu;
 
                 var resFact = new CefResourceRequestHandlerFactory();
@@ -146,28 +152,20 @@ namespace WebDownloader.Browser
                 webBrowser.Load(url);
             }
         }
-
-        private void cefMenu_CopyImageToClipboard(object sender, CopyImageEventArgs e)
+        public async Task<string> GetSource()
         {
-            DownloadObject dobj = new DownloadObject(e.url, ResourceType.Image, DownloadToWhere.ClipBoard);
-            DownloadManager.RegisterDownloadObject(dobj);
-            webBrowser.GetBrowserHost().StartDownload(e.url);
-        }
-
-        protected void webBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            Console.WriteLine("webBrowser_PreviewKeyDown:" + e.Modifiers + "+" + e.KeyCode);
-            if (e.Modifiers== Keys.None&&e.KeyCode==Keys.F12)
+            if (webBrowser != null)
             {
-                if (cefDevContainer.Tag!=null)
-                {
-                    CloseDevTools();
-                }
-                else
-                {
-                    ShowDevTools();
-                }
+                var source = await webBrowser.GetSourceAsync();
+                return source;
             }
+            else return null;
+        }
+        public async Task<string> GetSource(string url)
+        {
+            OpenUrl("view-source:" + url);
+            var source = await GetSource();
+            return source;
         }
         public void ShowDevTools()
         {
@@ -208,6 +206,46 @@ namespace WebDownloader.Browser
             }
             splitContainer.Panel2Collapsed = true;
         }
+
+        public void DownloadImage(string imageUrl, DownloadImageCallback callback)
+        {
+            if (webBrowser==null||webBrowser.GetBrowserHost()==null)
+            {
+                OpenUrl(imageUrl);
+            }
+            webBrowser.GetBrowserHost().DownloadImage(imageUrl, false, 0, false, callback);
+        }
+
+
+        private void cefMenu_CopyImageToClipboard(object sender, CopyImageEventArgs e)
+        {
+           // DownloadObject dobj = new DownloadObject(e.url, ResourceType.Image, DownloadToWhere.ClipBoard);
+           // DownloadManager.RegisterDownloadObject(dobj);
+            webBrowser.GetBrowserHost().DownloadImage(e.url, false, 0, false, new DownloadImageCallback((url, code, image,ex) =>
+                {
+                    if (image!=null)
+                    {
+                        Clipboard.SetImage(image);
+                    }
+                }));
+        }
+
+        protected void webBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Console.WriteLine("webBrowser_PreviewKeyDown:" + e.Modifiers + "+" + e.KeyCode);
+            if (e.Modifiers== Keys.None&&e.KeyCode==Keys.F12)
+            {
+                if (cefDevContainer.Tag!=null)
+                {
+                    CloseDevTools();
+                }
+                else
+                {
+                    ShowDevTools();
+                }
+            }
+        }
+
 
         private void cefMenu_ShowDevTool(object sender, EventArgs e)
         {
@@ -417,7 +455,7 @@ namespace WebDownloader.Browser
         }
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr GetWindow(IntPtr hWnd, GetWindowCmd uCmd);
+        private static extern IntPtr GetWindow(IntPtr hWnd, GetWindowCmd uCmd);
         /// <summary>
         /// 设置目标窗体大小，位置
         /// </summary>
@@ -429,13 +467,13 @@ namespace WebDownloader.Browser
         /// <param name="BRePaint">是否刷新窗体</param>
         /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool BRePaint);
-        public const int WM_CLOSE = 0x10;
+        private static extern int MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool BRePaint);
+        private const int WM_CLOSE = 0x10;
         [DllImport("user32.dll", EntryPoint = "SendMessageA")]
-        public static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        private static extern int SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
         [DllImport("user32.dll", EntryPoint = "SetParent")]
-        public static extern int SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
-        public enum GetWindowCmd : uint
+        private static extern int SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        private enum GetWindowCmd : uint
         {
             /// <summary>
             /// 返回的句柄标识了在Z序最高端的相同类型的窗口。

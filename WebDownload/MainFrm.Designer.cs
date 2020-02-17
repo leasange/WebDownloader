@@ -59,7 +59,6 @@
             this.panelWin.Style.ForeColor.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelText;
             this.panelWin.Style.GradientAngle = 90;
             this.panelWin.TabIndex = 4;
-            this.panelWin.Visible = false;
             // 
             // tabControl1
             // 
@@ -86,7 +85,7 @@
             this.tabControlPanel1.Location = new System.Drawing.Point(0, 0);
             this.tabControlPanel1.Name = "tabControlPanel1";
             this.tabControlPanel1.Padding = new System.Windows.Forms.Padding(1);
-            this.tabControlPanel1.Size = new System.Drawing.Size(876, 127);
+            this.tabControlPanel1.Size = new System.Drawing.Size(876, 105);
             this.tabControlPanel1.Style.BackColor1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(253)))), ((int)(((byte)(254)))));
             this.tabControlPanel1.Style.BackColor2.Color = System.Drawing.Color.FromArgb(((int)(((byte)(157)))), ((int)(((byte)(188)))), ((int)(((byte)(227)))));
             this.tabControlPanel1.Style.Border = DevComponents.DotNetBar.eBorderType.SingleLine;
@@ -110,7 +109,6 @@
             this.expandableSplitter1.BackColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.expandableSplitter1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.expandableSplitter1.ExpandableControl = this.panelWin;
-            this.expandableSplitter1.Expanded = false;
             this.expandableSplitter1.ExpandFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(101)))), ((int)(((byte)(147)))), ((int)(((byte)(207)))));
             this.expandableSplitter1.ExpandFillColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandableSplitter1.ExpandLineColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -131,7 +129,7 @@
             this.expandableSplitter1.HotGripDarkColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBorder;
             this.expandableSplitter1.HotGripLightColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(239)))), ((int)(((byte)(255)))));
             this.expandableSplitter1.HotGripLightColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.BarBackground;
-            this.expandableSplitter1.Location = new System.Drawing.Point(0, 418);
+            this.expandableSplitter1.Location = new System.Drawing.Point(0, 288);
             this.expandableSplitter1.Name = "expandableSplitter1";
             this.expandableSplitter1.Size = new System.Drawing.Size(876, 6);
             this.expandableSplitter1.Style = DevComponents.DotNetBar.eSplitterStyle.Office2007;
@@ -146,7 +144,7 @@
             this.panelEx3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelEx3.Location = new System.Drawing.Point(0, 0);
             this.panelEx3.Name = "panelEx3";
-            this.panelEx3.Size = new System.Drawing.Size(876, 418);
+            this.panelEx3.Size = new System.Drawing.Size(876, 288);
             this.panelEx3.Style.Alignment = System.Drawing.StringAlignment.Center;
             this.panelEx3.Style.BackColor1.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground;
             this.panelEx3.Style.BackColor2.ColorSchemePart = DevComponents.DotNetBar.eColorSchemePart.PanelBackground2;
@@ -162,7 +160,7 @@
             this.tabBrowsers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabBrowsers.Location = new System.Drawing.Point(0, 0);
             this.tabBrowsers.Name = "tabBrowsers";
-            this.tabBrowsers.Size = new System.Drawing.Size(876, 418);
+            this.tabBrowsers.Size = new System.Drawing.Size(876, 288);
             this.tabBrowsers.TabIndex = 0;
             // 
             // MainFrm
@@ -173,9 +171,10 @@
             this.Controls.Add(this.panelEx3);
             this.Controls.Add(this.expandableSplitter1);
             this.Controls.Add(this.panelWin);
+            this.DoubleBuffered = true;
             this.Name = "MainFrm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "网页下载器";
+            this.Text = "好用浏览器&网页下载器";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.panelWin.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
