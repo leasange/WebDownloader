@@ -12,6 +12,7 @@ namespace WebDownloader.CefHandler
         public event EventHandler<BeforeContextMenuEvenArgs> BeforeContextMenu;
         public event EventHandler ViewSource;
         public event EventHandler ShowDevTool;
+        public event EventHandler LoadScript;
         public event EventHandler<CopyImageEventArgs> CopyImageToClipboard;
         public event EventHandler<OpenLinkOrSourceArgs> OpenLinkOrSource;
 
@@ -20,6 +21,8 @@ namespace WebDownloader.CefHandler
         private const int OpenLinkSource = (int)CefSharp.CefMenuCommand.UserFirst + 3;//打开链接源码
         private const int OpenDevTool =(int)CefSharp.CefMenuCommand.UserFirst + 4 ;//开发工具
         private const int CopyLink = (int)CefSharp.CefMenuCommand.UserFirst + 5;//复制链接
+        private const int OpenLoadScript = (int)CefSharp.CefMenuCommand.UserFirst + 6;//加载脚本
+
         public void OnBeforeContextMenu(CefSharp.IWebBrowser chromiumWebBrowser, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.IMenuModel model)
         {
             if (BeforeContextMenu != null)
@@ -43,6 +46,7 @@ namespace WebDownloader.CefHandler
                 }
             }
             model.AddItem((CefSharp.CefMenuCommand)OpenDevTool, "开发者工具 F12");
+            model.AddItem((CefSharp.CefMenuCommand)OpenLoadScript, "加载脚本 F6");
         }
 
         public bool OnContextMenuCommand(CefSharp.IWebBrowser chromiumWebBrowser, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.CefMenuCommand commandId, CefSharp.CefEventFlags eventFlags)
@@ -83,6 +87,14 @@ namespace WebDownloader.CefHandler
                 case (CefSharp.CefMenuCommand)CopyLink:
                     {
                         Clipboard.SetText(parameters.LinkUrl);
+                    }
+                    return true;
+                case (CefSharp.CefMenuCommand)OpenLoadScript:
+                    {
+                        if (LoadScript!=null)
+                        {
+                            LoadScript(this, new EventArgs());
+                        }
                     }
                     return true;
                 default:

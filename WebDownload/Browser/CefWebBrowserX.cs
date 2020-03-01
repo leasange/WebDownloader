@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 
 namespace WebDownloader.Browser
 {
-    public partial class CefWebBrowerX : UserControl
+    public partial class CefWebBrowserX : UserControl
     {
         public event EventHandler<NewWindowEventArgs> NewNavigateBrowser;
         public event EventHandler<CefSharp.LoadingStateChangedEventArgs> LoadingStateChanged;
@@ -25,7 +25,12 @@ namespace WebDownloader.Browser
         public event EventHandler<TitleChangedEventArgs> TitleChanged;
 
         private bool _isViewSource = false;
-
+        private string _injectScript;
+        public string InjectScript
+        {
+            get { return _injectScript; }
+            set { _injectScript = value; }
+        }
         public ChromiumWebBrowserX webBrowser { get; private set; }
         public string WebName
         {
@@ -39,15 +44,17 @@ namespace WebDownloader.Browser
                 return webBrowser.GetBrowser().MainFrame.Name;
             }
         }
-        static CefWebBrowerX()
+        static CefWebBrowserX()
         {
             var setting = new CefSettings()
             {
                 Locale = "zh-CN",
                 AcceptLanguageList = "zh-CN",
-                MultiThreadedMessageLoop = true
+                MultiThreadedMessageLoop = true,
+                //UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI"
             };
             CefSharp.Cef.Initialize(setting);
+            CefSharpSettings.LegacyJavascriptBindingEnabled = true;
             if (CefSharpSettings.ShutdownOnExit)
             {
                 Application.ApplicationExit += OnApplicationExit;
@@ -57,7 +64,7 @@ namespace WebDownloader.Browser
         {
             Cef.Shutdown();
         }
-        public CefWebBrowerX()
+        public CefWebBrowserX()
         {
             InitializeComponent();
             splitContainer.Panel2Collapsed = true;
@@ -90,16 +97,16 @@ namespace WebDownloader.Browser
             OnNewNavigateBrowser(new NewWindowEventArgs(webBrowser, webBrowser.GetBrowser(), webBrowser.GetMainFrame(), url, null, WindowOpenDisposition.NewForegroundTab, null));
         }
 
-        public void OpenUrl(string url)
+        public void OpenUrl(string url,string injectScript=null)
         {
             if (string.IsNullOrWhiteSpace(url))
             {
                 url = "about:blank";
             }
-            if (url == "about:blank")
+            /*if (url == "about:blank")
             {
                 url = "https://www.baidu.com";
-            }
+            }*/
             if (url.StartsWith("view-source:"))
             {
                 _isViewSource = true;
@@ -108,11 +115,11 @@ namespace WebDownloader.Browser
             {
                 _isViewSource = false;
             }
+            _injectScript = injectScript;
             if (webBrowser == null)
             {
                 webBrowser = new ChromiumWebBrowserX(url);
-                webBrowser.ActivateBrowserOnCreation = true;
-                webBrowser.CreateControl();
+                webBrowser.RegisterJsObject("jsCallObject",new JsCallObject(),new BindingOptions(){CamelCaseJavascriptNames=false});
                 tbUrl.Text = url;
                 webBrowser.LoadingStateChanged += webBrowser_LoadingStateChanged;
                 webBrowser.FrameLoadStart += webBrowser_FrameLoadStart;
@@ -125,6 +132,7 @@ namespace WebDownloader.Browser
                 ceflife.BeforePopupEvent += ceflife_BeforePopupEvent;
                 webBrowser.LifeSpanHandler = ceflife;
                 var cefRequest = new CefRequestHandler();
+                cefRequest.GetResourceRequest += cefRequest_GetResourceRequest;
                 webBrowser.RequestHandler = cefRequest;
 
                 var cefMenu = new CefContextMenuHandler();
@@ -133,6 +141,7 @@ namespace WebDownloader.Browser
                 cefMenu.ShowDevTool += cefMenu_ShowDevTool;
                 cefMenu.CopyImageToClipboard += cefMenu_CopyImageToClipboard;
                 cefMenu.OpenLinkOrSource += cefMenu_OpenLinkOrSource;
+                cefMenu.LoadScript += cefMenu_LoadScript;
                 webBrowser.MenuHandler = cefMenu;
 
                 var resFact = new CefResourceRequestHandlerFactory();
@@ -142,8 +151,17 @@ namespace WebDownloader.Browser
                 webBrowser.DownloadHandler = new CefDownloadHandler();
                 webBrowser.KeyboardHandler = new CefKeyboardHandler();
 
+                var cefJsDialog = new CefJsDialogHandler();
+                cefJsDialog.JsDialog += cefJsDialog_JsDialog;
+                webBrowser.JsDialogHandler = cefJsDialog;
+
                 webBrowser.Dock = DockStyle.Fill;
                 webBrowser.PreviewKeyDown += webBrowser_PreviewKeyDown;
+
+                webBrowser.RenderProcessMessageHandler = new CefRenderProcessMessageHandler();
+
+                webBrowser.ActivateBrowserOnCreation = true;
+                webBrowser.CreateControl();
 
                 this.panelBrowser.Controls.Add(webBrowser);
             }
@@ -151,6 +169,44 @@ namespace WebDownloader.Browser
             {
                 webBrowser.Load(url);
             }
+        }
+
+        private void cefMenu_LoadScript(object sender, EventArgs e)
+        {
+            this.InvokeOnUiThreadIfRequired(new Action(() =>
+              {
+                  FrmOpenScripts frmOpenScript = new FrmOpenScripts(this);
+                  frmOpenScript.ShowDialog(this);
+              }));
+        }
+
+        private void cefJsDialog_JsDialog(object sender, JsDialogEventArgs e)
+        {
+            string script = "$(\"#cefMsg\").html(\"" + e.messageText + "\");";
+            e.callback.Continue(true, string.Empty);
+            e.suppressMessage = false;
+            e.result = true;
+            if (e.messageText.Contains("过于频繁"))
+            {
+                script += "setTimeout(\"bindNext()\", 2000);";
+                webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
+            }
+            else if (e.messageText.Contains("预约成功"))
+            {
+                webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
+            }
+            else if(e.messageText.Contains("已经约满"))
+            {
+                script += "afternoonNext();";
+                webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
+            }
+        }
+
+        private void cefRequest_GetResourceRequest(object sender, GetResourceRequestArgs e)
+        {
+            //headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI";
+            e.Headers = new System.Collections.Specialized.NameValueCollection();
+            e.Headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI";
         }
         public async Task<string> GetSource()
         {
@@ -233,15 +289,35 @@ namespace WebDownloader.Browser
         protected void webBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             Console.WriteLine("webBrowser_PreviewKeyDown:" + e.Modifiers + "+" + e.KeyCode);
-            if (e.Modifiers== Keys.None&&e.KeyCode==Keys.F12)
+            if (e.Modifiers==Keys.None)
             {
-                if (cefDevContainer.Tag!=null)
+                switch (e.KeyCode)
                 {
-                    CloseDevTools();
-                }
-                else
-                {
-                    ShowDevTools();
+                    case Keys.F12:
+                        {
+                            if (cefDevContainer.Tag != null)
+                            {
+                                CloseDevTools();
+                            }
+                            else
+                            {
+                                ShowDevTools();
+                            }
+                        }
+                        break;
+                    case Keys.F5:
+                        {
+                            RefreshPage();
+                        }
+                        break;
+                    case Keys.F6:
+                        {
+                            FrmOpenScripts frm = new FrmOpenScripts(this);
+                            frm.ShowDialog(this);
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -321,10 +397,10 @@ namespace WebDownloader.Browser
                 try
                 {
                     lbTips.Text = "结束加载:" + e.Url + ",结果:" + e.HttpStatusCode;
-                    /*if (e.Frame.IsMain)
+                    if (e.Frame.IsMain && !string.IsNullOrWhiteSpace(_injectScript))
                     {
-                        tbUrl.Text = e.Frame.Url;
-                    }*/
+                        e.Frame.ExecuteJavaScriptAsync(_injectScript);
+                    }
                     if (FrameLoadEnd != null)
                     {
                         FrameLoadEnd(this, e);
@@ -439,7 +515,7 @@ namespace WebDownloader.Browser
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        public void RefreshPage()
         {
             if (webBrowser != null)
             {
@@ -452,6 +528,10 @@ namespace WebDownloader.Browser
                     webBrowser.Reload(true);
                 }
             }
+        }
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshPage();
         }
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -550,6 +630,14 @@ namespace WebDownloader.Browser
             else
             {
                 splitContainer.SplitterDistance = this.Width - 300;
+            }
+        }
+
+        public void ExcuteScript()
+        {
+            if (!string.IsNullOrWhiteSpace(_injectScript))
+            {
+                webBrowser.GetMainFrame().ExecuteJavaScriptAsync(_injectScript);
             }
         }
     }

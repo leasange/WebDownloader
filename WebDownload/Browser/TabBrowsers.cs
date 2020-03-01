@@ -27,7 +27,7 @@ namespace WebDownloader.Browser
             InitializeComponent();
         }
 
-        public CefWebBrowerX NewBrowser(string url=null,bool selected=false)
+        public CefWebBrowserX NewBrowser(string url = null, bool selected = false, string injectScript = null)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace WebDownloader.Browser
                 superItem.AttachedControl = superTabControlPanel;
                 superTabControlPanel.TabItem = superItem;
 
-                CefWebBrowerX cefWebBrowerX = new CefWebBrowerX();
+                CefWebBrowserX cefWebBrowerX = new CefWebBrowserX();
                 cefWebBrowerX.Dock = DockStyle.Fill;
 
                 cefWebBrowerX.NewNavigateBrowser += cefWebBrowerX_NewTabEvent;
@@ -56,7 +56,7 @@ namespace WebDownloader.Browser
                 }
                 this.superTabControlX.Controls.Add(superTabControlPanel);
 
-                cefWebBrowerX.OpenUrl(url);
+                cefWebBrowerX.OpenUrl(url,injectScript);
                 return cefWebBrowerX;
             }
             catch (Exception)
@@ -72,7 +72,7 @@ namespace WebDownloader.Browser
         {
             this.InvokeOnUiThreadIfRequired(new Action(() =>
                 {
-                    var item = GetTabItem((CefWebBrowerX)sender);
+                    var item = GetTabItem((CefWebBrowserX)sender);
                     if (item != null)
                     {
                         item.Text = e.Title;
@@ -89,11 +89,11 @@ namespace WebDownloader.Browser
         {
             NewBrowser(e.url,e.selected);
         }
-        private SuperTabItem GetTabItem(CefWebBrowerX cefWebBrowerX)
+        private SuperTabItem GetTabItem(CefWebBrowserX cefWebBrowerX)
         {
             foreach (SuperTabItem item in this.superTabControlX.Tabs)
             {
-                var browser = item.AttachedControl.Controls[0] as CefWebBrowerX;
+                var browser = item.AttachedControl.Controls[0] as CefWebBrowserX;
                 if (browser != null && browser == cefWebBrowerX)
                 {
                     return item;
@@ -105,7 +105,7 @@ namespace WebDownloader.Browser
         {
             if (e.Frame.IsMain)
             {
-                SuperTabItem item = GetTabItem((CefWebBrowerX)sender);
+                SuperTabItem item = GetTabItem((CefWebBrowserX)sender);
                 if (item == null)
                 {
                     return;
@@ -116,7 +116,7 @@ namespace WebDownloader.Browser
 
         private void cefWebBrowerX_LoadingStateChanged(object sender, CefSharp.LoadingStateChangedEventArgs e)
         {
-            var cefWebBrowerX = (CefWebBrowerX)sender;
+            var cefWebBrowerX = (CefWebBrowserX)sender;
             SuperTabItem item = GetTabItem(cefWebBrowerX);
             if (item == null)
             {
@@ -138,18 +138,18 @@ namespace WebDownloader.Browser
            e.newBrowser = cefBrowser.webBrowser;
         }
 
-        public void OpenUrl(string url)
+        public void OpenUrl(string url, string injectScript=null, bool forceNewTab = false)
         {
-            CefWebBrowerX cefWebBrowerX = null;
-            if (this.superTabControlX.Tabs.Count > 0)
+            CefWebBrowserX cefWebBrowerX = null;
+            if (this.superTabControlX.Tabs.Count > 0 && !forceNewTab)
             {
                 var  superItem = this.superTabControlX.SelectedTab;
-                cefWebBrowerX = superItem.AttachedControl.Controls[0] as CefWebBrowerX;
-                cefWebBrowerX.OpenUrl(url);
+                cefWebBrowerX = superItem.AttachedControl.Controls[0] as CefWebBrowserX;
+                cefWebBrowerX.OpenUrl(url, injectScript);
             }
             else
             {
-                cefWebBrowerX = NewBrowser(url);
+                cefWebBrowerX = NewBrowser(url,false,injectScript);
             }
         }
 
@@ -174,6 +174,17 @@ namespace WebDownloader.Browser
                 e.Cancel = true;
                 OpenUrl(null);
             }
+        }
+
+        private void superTabControlX_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            var browser = superTabControlX.SelectedTab.AttachedControl.Controls[0] as CefWebBrowserX;
+            browser.RefreshPage();
+        }
+
+        private void superTabControlX_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+
         }
     }
 }

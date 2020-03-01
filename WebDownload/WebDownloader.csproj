@@ -137,6 +137,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="tessnet2_32">
+      <HintPath>..\dlls\tessnet2_32.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Browser\CefContainerControl.cs">
@@ -145,11 +148,11 @@
     <Compile Include="Browser\CefContainerControl.Designer.cs">
       <DependentUpon>CefContainerControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Browser\CefWebBrowerX.cs">
+    <Compile Include="Browser\CefWebBrowserX.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Browser\CefWebBrowerX.Designer.cs">
-      <DependentUpon>CefWebBrowerX.cs</DependentUpon>
+    <Compile Include="Browser\CefWebBrowserX.Designer.cs">
+      <DependentUpon>CefWebBrowserX.cs</DependentUpon>
     </Compile>
     <Compile Include="Browser\ChromiumWebBrowserX.cs">
       <SubType>Component</SubType>
@@ -158,11 +161,14 @@
       <DependentUpon>ChromiumWebBrowserX.cs</DependentUpon>
     </Compile>
     <Compile Include="Browser\ControlExtensions.cs" />
+    <Compile Include="Browser\JsCallObject.cs" />
     <Compile Include="CefHandler\BeforeContextMenuEvenArgs.cs" />
     <Compile Include="CefHandler\CefContextMenuHandler.cs" />
     <Compile Include="CefHandler\CefDownloadHandler.cs" />
+    <Compile Include="CefHandler\CefJsDialogHandler.cs" />
     <Compile Include="CefHandler\CefKeyboardHandler.cs" />
     <Compile Include="CefHandler\CefLifeSpanHandler.cs" />
+    <Compile Include="CefHandler\CefRenderProcessMessageHandler.cs" />
     <Compile Include="CefHandler\CefRequestHandler.cs" />
     <Compile Include="CefHandler\CefResourceRequestHandler.cs" />
     <Compile Include="CefHandler\CefResourceRequestHandlerFactory.cs" />
@@ -171,6 +177,8 @@
     <Compile Include="CefHandler\CreateTabEventArgs.cs" />
     <Compile Include="CefHandler\DownloadManager.cs" />
     <Compile Include="CefHandler\DownloadObject.cs" />
+    <Compile Include="CefHandler\GetResourceRequestArgs.cs" />
+    <Compile Include="CefHandler\JsDialogEventArgs.cs" />
     <Compile Include="CefHandler\NewWindowEventArgs.cs" />
     <Compile Include="Browser\TabBrowsers.cs">
       <SubType>UserControl</SubType>
@@ -178,7 +186,6 @@
     <Compile Include="Browser\TabBrowsers.Designer.cs">
       <DependentUpon>TabBrowsers.cs</DependentUpon>
     </Compile>
-    <Compile Include="Browser\UrlChangedEventArgs.cs" />
     <Compile Include="CefHandler\OpenLinkOrSourceArgs.cs" />
     <Compile Include="Control\SuperTabControlX.cs">
       <SubType>Component</SubType>
@@ -195,25 +202,35 @@
     <Compile Include="Downloader\DownloadTask.cs" />
     <Compile Include="Downloader\SubGroupDownloadTask.cs" />
     <Compile Include="Downloader\Tests\MM131Test.cs" />
+    <Compile Include="FrmOpenScripts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmOpenScripts.Designer.cs">
+      <DependentUpon>FrmOpenScripts.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainFrm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainFrm.Designer.cs">
       <DependentUpon>MainFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\UnCodebase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Browser\CefContainerControl.resx">
       <DependentUpon>CefContainerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Browser\CefWebBrowerX.resx">
-      <DependentUpon>CefWebBrowerX.cs</DependentUpon>
+    <EmbeddedResource Include="Browser\CefWebBrowserX.resx">
+      <DependentUpon>CefWebBrowserX.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Browser\TabBrowsers.resx">
       <DependentUpon>TabBrowsers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Downloader\DownloadCtrl.resx">
       <DependentUpon>DownloadCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmOpenScripts.resx">
+      <DependentUpon>FrmOpenScripts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainFrm.resx">
       <DependentUpon>MainFrm.cs</DependentUpon>
@@ -238,11 +255,42 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="tessdata\eng.DangAmbigs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.freq-dawg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.inttemp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.normproto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.pffmtable">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.unicharset">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.user-words">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="tessdata\eng.word-dawg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="InjectScripts\batch.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="InjectScripts\BatchScripts\qkz_base.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -1,6 +1,6 @@
 ﻿namespace WebDownloader.Browser
 {
-    partial class CefWebBrowerX
+    partial class CefWebBrowserX
     {
         /// <summary> 
         /// 必需的设计器变量。
