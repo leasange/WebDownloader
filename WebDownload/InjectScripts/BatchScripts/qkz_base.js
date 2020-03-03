@@ -7,7 +7,18 @@ var count = 1;
 setTimeout(function () {
     console.log("name element = " + document.getElementById("name"));
     document.title = "##{real_name}##";
+    var lb = document.getElementById("cefMsg");
+    if (lb==undefined) {
+        lb = document.createElement("label");
+        lb.setAttribute("id", "cefMsg");
+        lb.setAttribute("style", "font-size:20px;color:red;background-color:black;");
+        lb.innerHTML = "暂无消息";
+        document.body.insertBefore(lb, document.body.childNodes[0]);
+    }
+    lb = document.getElementById("cefMsg");
+    lb.innerHTML = "暂无消息";
     if (document.getElementById("name") == undefined) {
+        lb.innerHTML = "当前非枪口罩页面";
         setInterval(function () {
             if (document.getElementById("name") == undefined) {
                 var now = new Date();
@@ -17,7 +28,8 @@ setTimeout(function () {
                 if (now > time) {
                     var sp = (now.getTime() - time.getTime()) / 1000;
                     console.log(sp);
-                    if (sp>30) {
+                    if (sp > 30) {
+                        lb.innerHTML = "当前枪口罩已过时间：" + sp + "秒";
                         return;
                     }
                     window.location.reload();
@@ -27,8 +39,8 @@ setTimeout(function () {
         return;
     }
 
-    var lb = $("<label id=\"cefMsg\" style=\"font-size:20px;color:red;background-color:black;\">暂无消息</label>");
-    $("body").prepend(lb);
+    //var lb = $("<label id=\"cefMsg\" style=\"font-size:20px;color:red;background-color:black;\">暂无消息</label>");
+    //$("body").prepend(lb);
 
     document.getElementById("name").value = "##{real_name}##";
     document.getElementById("pharmacyName").value = "国胜大药房香御公馆店";
@@ -51,9 +63,7 @@ function getCodeImage() {
             clearInterval(getCodeInterval);
             var code = jsCallObject.GetValidateCode(src);
             if (code.length != 4) {
-                document.getElementById("validateImg").src = "";
-                refreshImg();
-                getCodeInterval = setInterval("getCodeImage()", 100);
+                codeErrorRetry();
                 return;
             }
             document.getElementById("captcha").value = code;//验证码
@@ -71,4 +81,10 @@ function afternoonNext() {
         count = 2;
         getCodeInterval = setInterval("getCodeImage()", 100);
     }
+}
+
+function codeErrorRetry() {
+    document.getElementById("validateImg").src = "";
+    refreshImg();
+    getCodeInterval = setInterval("getCodeImage()", 100);
 }

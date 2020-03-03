@@ -188,16 +188,25 @@ namespace WebDownloader.Browser
             e.result = true;
             if (e.messageText.Contains("过于频繁"))
             {
-                script += "setTimeout(\"bindNext()\", 2000);";
+                script += "setTimeout(\"bindNext()\", 1500);";
                 webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
             }
-            else if (e.messageText.Contains("预约成功"))
+            else if (e.messageText.Contains("验证码错误"))
             {
+                script += "codeErrorRetry();";
                 webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
             }
+            //else if (e.messageText.Contains("预约成功"))
+            //{
+            //    webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
+           // }
             else if(e.messageText.Contains("已经约满"))
             {
                 script += "afternoonNext();";
+                webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
+            }
+            else
+            {
                 webBrowser.GetMainFrame().ExecuteJavaScriptAsync(script);
             }
         }
