@@ -43,10 +43,10 @@ setTimeout(function () {
     //$("body").prepend(lb);
 
     document.getElementById("name").value = "##{real_name}##";
-    document.getElementById("pharmacyName").value = "国胜大药房香御公馆店";
-    document.getElementById("pharmacyCode").value = "10175";
+    document.getElementById("pharmacyName").value = "##{pharmacy_name}##";
+    document.getElementById("pharmacyCode").value = "##{pharmacy_code}##";
     document.getElementById("cardNo").value = "##{card_code}##";
-    document.getElementById("phone").value = "17352959982";
+    document.getElementById("phone").value = "##{phone}##";
     document.getElementById("reservationNumber").value = "5";
     document.getElementById("pharmacyPhaseName").value = "9:00-13:00";
     document.getElementById("pharmacyPhase").value = "9:00-13:00";

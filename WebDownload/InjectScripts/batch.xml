@@ -2,40 +2,67 @@
 <root>
   <batch script="qkz_base.js" name="抢口罩">
     <item name="吴圆圆" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">吴圆圆</param>
       <param id="card_code">341126198508272547</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="李垚楠" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">李垚楠</param>
       <param id="card_code">34010420190930551X</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="唐守玲" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">唐守玲</param>
       <param id="card_code">341126196101102520</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="吴成艳" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">吴成艳</param>
       <param id="card_code">341126198411042542</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="吴进全" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">吴进全</param>
       <param id="card_code">342326195703102912</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="吴新星" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">吴新星</param>
       <param id="card_code">341126199310162590</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="吴燕红" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">吴燕红</param>
       <param id="card_code">34112619860913256X</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="张聪健" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">张聪健</param>
       <param id="card_code">341125201005100194</param>
+      <param id="phone">17352959982</param>
     </item>
     <item name="张顺凤" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
       <param id="real_name">张顺凤</param>
       <param id="card_code">341125198810153972</param>
+      <param id="phone">17352959982</param>
     </item>
   </batch>
 </root>
