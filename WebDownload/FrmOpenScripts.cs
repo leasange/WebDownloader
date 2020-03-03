@@ -46,7 +46,7 @@ namespace WebDownloader
                         {
                             string thScript = scriptBase;
                             string name = item.Attributes["name"].Value;
-                            string browser = item.Attributes["browser"].Value;//browser,tab
+                            //string browser = item.Attributes["browser"].Value;//browser,tab
                             XmlNodeList prms = item.SelectNodes("param");
                             foreach (XmlNode prm in prms)
                             {

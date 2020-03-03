@@ -46,19 +46,27 @@ namespace WebDownloader.Browser
         }
         static CefWebBrowserX()
         {
-            var setting = new CefSettings()
+            try
             {
-                Locale = "zh-CN",
-                AcceptLanguageList = "zh-CN",
-                MultiThreadedMessageLoop = true,
-                //UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI"
-            };
-            CefSharp.Cef.Initialize(setting);
-            CefSharpSettings.LegacyJavascriptBindingEnabled = true;
-            if (CefSharpSettings.ShutdownOnExit)
-            {
-                Application.ApplicationExit += OnApplicationExit;
+                var setting = new CefSettings()
+                {
+                    Locale = "zh-CN",
+                    AcceptLanguageList = "zh-CN",
+                    MultiThreadedMessageLoop = true,
+                    //UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI"
+                };
+                CefSharp.Cef.Initialize(setting);
+                CefSharpSettings.LegacyJavascriptBindingEnabled = true;
+                if (CefSharpSettings.ShutdownOnExit)
+                {
+                    Application.ApplicationExit += OnApplicationExit;
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("初始化浏览器异常：" + ex.Message + "\r\n" + ex.StackTrace);
+            }
+
         }
         private static void OnApplicationExit(object sender, EventArgs e)
         {

@@ -298,7 +298,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InjectScripts\BatchScripts\pharmacy_search.js" />
+    <None Include="InjectScripts\BatchScripts\pharmacy_search.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

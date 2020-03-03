@@ -65,4 +65,8 @@
       <param id="phone">17352959982</param>
     </item>
   </batch>
+  <batch script="pharmacy_search.js" name="查询药店信息">
+    <item name="查询药店" browser="process">
+    </item>
+  </batch>
 </root>

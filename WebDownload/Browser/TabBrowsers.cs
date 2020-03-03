@@ -56,11 +56,12 @@ namespace WebDownloader.Browser
                 }
                 this.superTabControlX.Controls.Add(superTabControlPanel);
 
-                cefWebBrowerX.OpenUrl(url,injectScript);
+                cefWebBrowerX.OpenUrl(url, injectScript);
                 return cefWebBrowerX;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageBox.Show("打开页面异常:" + ex.Message + "\r\n" + ex.StackTrace);
                 return null;
             }
             finally
