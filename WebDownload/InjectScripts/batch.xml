@@ -64,6 +64,20 @@
       <param id="card_code">341125198810153972</param>
       <param id="phone">17352959982</param>
     </item>
+    <item name="李启成" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
+      <param id="real_name">李启成</param>
+      <param id="card_code">342421195606024418</param>
+      <param id="phone">17352959982</param>
+    </item>
+    <item name="林成全" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
+      <param id="real_name">林成全</param>
+      <param id="card_code">342421195711284422</param>
+      <param id="phone">17352959982</param>
+    </item>
   </batch>
   <batch script="pharmacy_search.js" name="查询药店信息">
     <item name="查询药店" browser="process">
