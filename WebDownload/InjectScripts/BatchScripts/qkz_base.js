@@ -17,10 +17,10 @@ setTimeout(function () {
     }
     lb = document.getElementById("cefMsg");
     lb.innerHTML = "暂无消息";
-    if (document.getElementById("name") == undefined) {
-        lb.innerHTML = "当前非枪口罩页面";
+    if (document.getElementById("captcha") == undefined) {
+        lb.innerHTML = "当前非枪口罩页面-等待自动刷新...";
         setInterval(function () {
-            if (document.getElementById("name") == undefined) {
+            if (document.getElementById("captcha") == undefined) {
                 var now = new Date();
                 var time = new Date();
                 time.setHours(16, 59, 59);
@@ -28,7 +28,7 @@ setTimeout(function () {
                 if (now > time) {
                     var sp = (now.getTime() - time.getTime()) / 1000;
                     console.log(sp);
-                    if (sp > 30) {
+                    if (sp > 200) {
                         lb.innerHTML = "当前枪口罩已过时间：" + sp + "秒";
                         return;
                     }
