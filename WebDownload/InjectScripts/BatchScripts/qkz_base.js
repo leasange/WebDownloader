@@ -29,7 +29,7 @@ setTimeout(function () {
                     var sp = (now.getTime() - time.getTime()) / 1000;
                     console.log(sp);
                     if (sp > 200) {
-                        lb.innerHTML = "当前枪口罩已过时间：" + sp + "秒";
+                        lb.innerHTML = "当前枪口罩已过时间：" + sp + "秒,今天不抢了，明天17:00请打开，再见！！！！";
                         return;
                     }
                     window.location.reload();
