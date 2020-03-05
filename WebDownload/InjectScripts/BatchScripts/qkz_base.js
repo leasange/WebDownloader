@@ -12,11 +12,11 @@ setTimeout(function () {
         lb = document.createElement("label");
         lb.setAttribute("id", "cefMsg");
         lb.setAttribute("style", "font-size:20px;color:red;background-color:black;");
-        lb.innerHTML = "暂无消息";
+        lb.innerHTML = "暂无消息，请等待...";
         document.body.insertBefore(lb, document.body.childNodes[0]);
     }
     lb = document.getElementById("cefMsg");
-    lb.innerHTML = "暂无消息";
+    lb.innerHTML = "暂无消息，请等待...";
     if (document.getElementById("captcha") == undefined) {
         lb.innerHTML = "当前非枪口罩页面-等待自动刷新...";
         setInterval(function () {
