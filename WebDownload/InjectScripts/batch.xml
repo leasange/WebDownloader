@@ -1,6 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
   <batch script="qkz_base.js" name="抢口罩">
+    <item name="李贤军" browser="process">
+      <param id="pharmacy_name">国胜大药房香御公馆店</param>
+      <param id="pharmacy_code">10175</param>
+      <param id="real_name">李贤军</param>
+      <param id="card_code">342401198909032712</param>
+      <param id="phone">17352959982</param>
+    </item>
     <item name="吴圆圆" browser="process">
       <param id="pharmacy_name">国胜大药房香御公馆店</param>
       <param id="pharmacy_code">10175</param>

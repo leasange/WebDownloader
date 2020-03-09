@@ -53,8 +53,9 @@ namespace WebDownloader.Browser
                     Locale = "zh-CN",
                     AcceptLanguageList = "zh-CN",
                     MultiThreadedMessageLoop = true,
-                    //UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI"
-                };
+                    UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI"
+                };//
+                //Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1295.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI MicroMessenger/7.0.5 WindowsWechat
                 CefSharp.Cef.Initialize(setting);
                 CefSharpSettings.LegacyJavascriptBindingEnabled = true;
                 if (CefSharpSettings.ShutdownOnExit)

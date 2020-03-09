@@ -1,5 +1,7 @@
 ﻿//url:http://kzgm.bbshjz.cn:8000/ncms/mask/book-view
 //name:抢口罩
+//alert(window.navigator.userAgent.toLowerCase());
+
 if (window.location.href.indexOf("http://kzgm.bbshjz.cn:8000") == -1) {
     window.location.href="http://kzgm.bbshjz.cn:8000/ncms/mask/book-view";
 }
