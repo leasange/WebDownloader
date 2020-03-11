@@ -46,14 +46,23 @@ namespace WebDownloader.Browser
         }
         static CefWebBrowserX()
         {
+            InitCef();
+        }
+
+        public static void InitCef()
+        {
             try
             {
+                if (Cef.IsInitialized)
+                {
+                    return;
+                }
                 var setting = new CefSettings()
                 {
                     Locale = "zh-CN",
                     AcceptLanguageList = "zh-CN",
                     MultiThreadedMessageLoop = true,
-                    UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI"
+                    UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1295.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI MicroMessenger/7.0.5 WindowsWechat"
                 };//
                 //Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1295.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI MicroMessenger/7.0.5 WindowsWechat
                 CefSharp.Cef.Initialize(setting);
@@ -67,8 +76,19 @@ namespace WebDownloader.Browser
             {
                 MessageBox.Show("初始化浏览器异常：" + ex.Message + "\r\n" + ex.StackTrace);
             }
-
         }
+
+        public static void FinitCef()
+        {
+            Cef.Shutdown();
+            if (CefSharpSettings.ShutdownOnExit)
+            {
+                Application.ApplicationExit -= OnApplicationExit;
+            }
+        }
+
+
+
         private static void OnApplicationExit(object sender, EventArgs e)
         {
             Cef.Shutdown();
@@ -123,6 +143,12 @@ namespace WebDownloader.Browser
             else
             {
                 _isViewSource = false;
+
+                if (url.StartsWith("chrome://setting"))
+                {
+                    
+                }
+
             }
             _injectScript = injectScript;
             if (webBrowser == null)
@@ -224,7 +250,8 @@ namespace WebDownloader.Browser
         {
             //headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI";
             e.Headers = new System.Collections.Specialized.NameValueCollection();
-            e.Headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12A365 MicroMessenger/5.4.1 NetType/WIFI";
+            e.Headers["User-Agent"] = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1295.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI MicroMessenger/7.0.5 WindowsWechat";
+            //e.Headers["Cookie"] = "JSESSIONID=3140F8C2FCE12B63F7B1FD2CB38B020D";
         }
         public async Task<string> GetSource()
         {
